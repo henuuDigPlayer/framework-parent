@@ -3,6 +3,7 @@ package com.zjdex.framework.config;
 import com.alibaba.fastjson.support.spring.FastJsonRedisSerializer;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CachingConfigurerSupport;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.interceptor.KeyGenerator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,6 +23,7 @@ import java.time.Duration;
  * @description: redis配置
  */
 @Configuration
+@EnableCaching
 public class RedisConfig  extends CachingConfigurerSupport {
 
     @Bean
