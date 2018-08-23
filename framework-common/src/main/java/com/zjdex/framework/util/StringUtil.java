@@ -1,6 +1,9 @@
 package com.zjdex.framework.util;
 
 
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Collection;
@@ -11,6 +14,8 @@ import java.util.Collection;
  * @description: 数据校验
  */
 public class StringUtil {
+
+    public static Gson gson = new Gson();
 
     /**
      * 容器校验
@@ -52,7 +57,7 @@ public class StringUtil {
         StringBuilder value = new StringBuilder();
         if (!isEmpty(objects)) {
             for (Object o : objects) {
-                value.append(JsonUtil.objectToJson(o)).append(",");
+                value.append(gson.toJson(o)).append(",");
             }
         }
         return value.toString();
