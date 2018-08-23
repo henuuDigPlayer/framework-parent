@@ -14,6 +14,7 @@
     <module>framework-mq</module>
     <module>framework-cache</module>
     <module>framework-common</module>
+    <module>framework-boot-starter</module>
   </modules>
 
   <name>framework-parent</name>

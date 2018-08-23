@@ -41,4 +41,20 @@ public class StringUtil {
     public static boolean isEmpty(Object[] objects) {
         return objects == null || objects.length <= 0;
     }
+
+    /**
+     * 数组转字符串
+     *
+     * @param objects Object对象数组
+     * @return String
+     */
+    public static String getString(Object[] objects) {
+        StringBuilder value = new StringBuilder();
+        if (!isEmpty(objects)) {
+            for (Object o : objects) {
+                value.append(JsonUtil.objectToJson(o)).append(",");
+            }
+        }
+        return value.toString();
+    }
 }

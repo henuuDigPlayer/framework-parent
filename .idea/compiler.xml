@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="framework-cache" />
+        <module name="framework-common" />
+        <module name="framework-core" />
+        <module name="framework-mq" />
+        <module name="frameworkbootstarter" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="framework-boot-starter" target="1.8" />
+      <module name="framework-cache" target="1.8" />
+      <module name="framework-common" target="1.8" />
+      <module name="framework-core" target="1.8" />
+      <module name="framework-mq" target="1.7" />
+      <module name="framework-starter" target="1.8" />
+      <module name="frameworkbootstarter" target="1.7" />
+      <module name="parent" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+</project>

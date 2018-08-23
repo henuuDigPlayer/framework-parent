@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/framework-boot-starter/framework-boot-starter.iml" filepath="$PROJECT_DIR$/framework-boot-starter/framework-boot-starter.iml" />
+      <module fileurl="file://$PROJECT_DIR$/framework-cache/framework-cache.iml" filepath="$PROJECT_DIR$/framework-cache/framework-cache.iml" />
+      <module fileurl="file://$PROJECT_DIR$/framework-common/framework-common.iml" filepath="$PROJECT_DIR$/framework-common/framework-common.iml" />
+      <module fileurl="file://$PROJECT_DIR$/framework-core/framework-core.iml" filepath="$PROJECT_DIR$/framework-core/framework-core.iml" />
+      <module fileurl="file://$PROJECT_DIR$/framework-mq/framework-mq.iml" filepath="$PROJECT_DIR$/framework-mq/framework-mq.iml" />
+      <module fileurl="file://$PROJECT_DIR$/framework-starter/framework-starter.iml" filepath="$PROJECT_DIR$/framework-starter/framework-starter.iml" />
+      <module fileurl="file://$PROJECT_DIR$/parent.iml" filepath="$PROJECT_DIR$/parent.iml" />
+    </modules>
+  </component>
+</project>
