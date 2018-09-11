@@ -11,30 +11,26 @@ public class Base64Util {
     private static final Base64.Encoder BASE64_ENCODER = Base64.getEncoder();
     private static final Base64.Decoder BASE64_DECODER = Base64.getDecoder();
 
-    public static String encode(String value)
-    {
+    public static String encode(String value) {
         if (StringUtil.isEmpty(value)) {
             return "";
         }
         return encode(value.getBytes());
     }
 
-    public static String encode(byte[] binaryData)
-    {
+    public static String encode(byte[] binaryData) {
         if (binaryData == null) {
             return null;
         }
         return new String(BASE64_ENCODER.encode(binaryData));
     }
 
-    public static String decode2Sting(String encoded)
-    {
+    public static String decode2Sting(String encoded) {
         byte[] bytes = decode(encoded);
         return new String(bytes);
     }
 
-    public static byte[] decode(String encoded)
-    {
+    public static byte[] decode(String encoded) {
         if (encoded == null) {
             return null;
         }

@@ -1,0 +1,87 @@
+package com.zjdex.framework.util;
+
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.JWTVerifier;
+import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.interfaces.Claim;
+import com.auth0.jwt.interfaces.DecodedJWT;
+import org.apache.commons.lang3.StringUtils;
+
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * @author lindj
+ * @create 2018/9/10
+ * @desc 功能描述
+ **/
+public class TokenUtil {
+
+    /**
+     * jwt秘钥
+     */
+    public static final String SECRET = "ZJDEX";
+
+    /**
+     * 创建token
+     *
+     * @param uid Long 用户唯一标识
+     * @return
+     * @throws Exception
+     */
+    public static String createToken(Long uid) throws Exception {
+        Date iatDate = new Date();
+        Calendar nowTime = Calendar.getInstance();
+        nowTime.add(Calendar.SECOND, (int)ConstantUtil.TIMEOUT);
+        Date expiresDate = nowTime.getTime();
+
+        //jwt头部信息
+        Map<String, Object> map = new HashMap<String, Object>(3);
+        map.put("alg", "HS256");
+        map.put("typ", "JWT");
+
+        String token = JWT.create().withHeader(map).withClaim("iss", "service")
+                .withClaim("aud", "web")
+                .withClaim("uid", null == uid ? null : uid.toString())
+                .withIssuedAt(iatDate)
+                .withExpiresAt(expiresDate)
+                .sign(Algorithm.HMAC256(SECRET));
+
+        return token;
+    }
+
+    /**
+     * 解密Token
+     *
+     * @param token
+     * @return
+     * @throws Exception
+     */
+    public static Map<String, Claim> parseToken(String token) {
+        DecodedJWT jwt = null;
+        try {
+            JWTVerifier verifier = JWT.require(Algorithm.HMAC256(SECRET)).build();
+            jwt = verifier.verify(token);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return jwt.getClaims();
+    }
+
+    /**
+     * 根据Token获取uid
+     *
+     * @param token
+     * @return uid
+     */
+    public static Long getUid(String token) {
+        Map<String, Claim> claims = parseToken(token);
+        Claim uidClaim = claims.get("uid");
+        if (null == uidClaim || StringUtils.isEmpty(uidClaim.asString())) {
+        }
+        return Long.valueOf(uidClaim.asString());
+    }
+
+}

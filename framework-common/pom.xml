@@ -17,6 +17,7 @@
         <commons-lang>3.7</commons-lang>
         <slf4j>1.7.25</slf4j>
         <gson>2.8.5</gson>
+        <jwt>3.4.0</jwt>
     </properties>
 
     <dependencies>
@@ -41,7 +42,11 @@
             <artifactId>gson</artifactId>
             <version>${gson}</version>
         </dependency>
-
+        <dependency>
+            <groupId>com.auth0</groupId>
+            <artifactId>java-jwt</artifactId>
+            <version>${jwt}</version>
+        </dependency>
 
 
     </dependencies>
