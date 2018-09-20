@@ -1,6 +1,7 @@
 package com.zjdex.framework.util;
 
 import java.math.BigDecimal;
+import java.util.Random;
 
 /**
  * @author: lindj
@@ -33,9 +34,27 @@ public class NumberUtils {
             scale) {
         BigDecimal b1 = new BigDecimal(first.toString());
         BigDecimal b2 = new BigDecimal(second.toString());
-        double value = (b1.doubleValue() / b2.doubleValue() ) * 100;
-        BigDecimal result =  new BigDecimal(value);
+        double value = (b1.doubleValue() / b2.doubleValue()) * 100;
+        BigDecimal result = new BigDecimal(value);
         return result.setScale(scale, BigDecimal.ROUND_HALF_UP).doubleValue();
+    }
+
+    /**
+     * 获取定长随机数字符串
+     *
+     * @param length Integer长度
+     * @return String
+     */
+    public static String getValifyCode(Integer length) {
+        Random random = new Random();
+        StringBuilder builder = new StringBuilder();
+        if (length == null) {
+            length = 4;
+        }
+        for (int i = 0; i < length; i++) {
+            builder.append(random.nextInt(10));
+        }
+        return builder.toString();
     }
 
 }

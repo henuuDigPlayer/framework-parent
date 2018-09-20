@@ -1,5 +1,6 @@
 package com.zjdex.framework.aspect;
 
+import com.alibaba.fastjson.JSON;
 import com.zjdex.framework.bean.BaseResponse;
 import com.zjdex.framework.exception.CodeException;
 import com.zjdex.framework.util.JsonUtil;
@@ -51,21 +52,21 @@ public class HttpRequestAspect {
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = attributes.getRequest();
         request.setAttribute("begin", System.currentTimeMillis());
-        //请求地址
+        // 请求地址
         logger.info("url = {}", request.getRequestURL());
-        //请求类型
+        // 请求类型
         String method = request.getMethod();
 
         logger.info("method = {}", method);
-        //来源ip
+        // 来源ip
         logger.info("ip = {}", request.getRemoteAddr());
-        //请求处理方法
+        // 请求处理方法
         logger.info("class_method = {}", joinPoint.getSignature()
                 .getDeclaringTypeName() + "." + joinPoint.getSignature().getName());
-        //请求参数
+        // 请求参数
         try {
             Object[] objects = joinPoint.getArgs();
-            logger.info("args = {}", StringUtil.getString(objects));
+            logger.info("args = {}",  JSON.toJSONString(joinPoint.getArgs()[0]));
         }catch (Exception e){
             logger.error(e.getMessage());
         }

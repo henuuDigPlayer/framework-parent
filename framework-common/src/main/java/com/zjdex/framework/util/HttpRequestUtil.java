@@ -10,7 +10,9 @@ import java.io.OutputStreamWriter;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @author lindj
@@ -27,7 +29,8 @@ public class HttpRequestUtil {
      * @param params Map对象
      * @return json字符串
      */
-    public static String doPost(String url, Map<String, Object> params) {
+    public static String doPost(String url, Map<String, Object> params,
+                                Map<String, String> headers) {
         String result = "";
         OutputStreamWriter out = null;
         BufferedReader in = null;
@@ -41,6 +44,16 @@ public class HttpRequestUtil {
             connection.setRequestMethod("POST");
             connection.setRequestProperty("Accept", "application/json");
             connection.setRequestProperty("Content-Type", "application/json");
+            if(headers != null){
+               Set<Map.Entry<String, String>> sets = headers.entrySet();
+               if(!StringUtil.isEmpty(sets)){
+                   Iterator<Map.Entry<String, String>> iterator = sets.iterator();
+                   while (iterator.hasNext()){
+                       Map.Entry<String, String> entry = iterator.next();
+                       connection.setRequestProperty(entry.getKey(), entry.getValue());
+                   }
+               }
+            }
             connection.connect();
             out = new OutputStreamWriter(connection.getOutputStream(), "UTF-8");
             out.append(JsonUtil.objectToJson(params));

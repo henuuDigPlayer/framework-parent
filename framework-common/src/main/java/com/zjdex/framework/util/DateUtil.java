@@ -13,6 +13,7 @@ public class DateUtil {
 
     public static final String YYYY_MM_DD = "yyyy-MM-dd";
     public static final String YYYY_MM = "yyyy-MM";
+    public static final String YYYY_MM_DD_ZERO = "yyyy-MM-dd 00:00:00";
 
     /**
      * 日期转字符串
@@ -25,7 +26,7 @@ public class DateUtil {
         try {
             SimpleDateFormat sdf = new SimpleDateFormat(format);
             return sdf.format(value);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
@@ -76,5 +77,20 @@ public class DateUtil {
             e.printStackTrace();
         }
         return null;
+    }
+
+    /**
+     * 获取间隔日期
+     *
+     * @param time   Date 基点日期
+     * @param offset Integer 间隔时间
+     * @return Date
+     */
+    public static Date getDateOffset(Date time, Integer offset) {
+        if(offset == null){
+            return time;
+        }
+        Long value = time.getTime() + 24 * 60 * 60 * 1000L * offset;
+        return new Date(value);
     }
 }

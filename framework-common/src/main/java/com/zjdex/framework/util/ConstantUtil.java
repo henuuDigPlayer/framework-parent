@@ -16,4 +16,19 @@ public interface ConstantUtil {
      */
     long REQUEST_TIMEOUT = 10;
 
+    /**
+     * 缓存验证码前缀
+     */
+    String VALIFY_CODE = "valifyCode";
+
+    /**
+     * 缓存短信计时器前缀
+     */
+    String MESSAGE_LIMIT = "messageLimit";
+
+    /**
+     * token前缀
+     */
+    String TOKEN = "token";
+
 }

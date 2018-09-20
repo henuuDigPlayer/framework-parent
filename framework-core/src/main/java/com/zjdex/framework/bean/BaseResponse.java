@@ -4,12 +4,14 @@ package com.zjdex.framework.bean;
 import com.zjdex.framework.enums.CodeEnum;
 import com.zjdex.framework.util.ResultCode;
 
+import java.io.Serializable;
+
 /**
  * @author: lindj
  * @date: 2018/4/12 13:50
  * @description: 封装返回实体,未完待续
  */
-public class BaseResponse {
+public class BaseResponse implements Serializable {
 
     private Integer code;
     private String message;

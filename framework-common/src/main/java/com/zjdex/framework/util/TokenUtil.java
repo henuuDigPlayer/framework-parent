@@ -31,7 +31,7 @@ public class TokenUtil {
      * @return
      * @throws Exception
      */
-    public static String createToken(Long uid) throws Exception {
+    public static String createToken(Long uid){
         Date iatDate = new Date();
         Calendar nowTime = Calendar.getInstance();
         nowTime.add(Calendar.SECOND, (int)ConstantUtil.TIMEOUT);
@@ -66,6 +66,7 @@ public class TokenUtil {
             jwt = verifier.verify(token);
         } catch (Exception e) {
             e.printStackTrace();
+            return null;
         }
         return jwt.getClaims();
     }
@@ -80,6 +81,7 @@ public class TokenUtil {
         Map<String, Claim> claims = parseToken(token);
         Claim uidClaim = claims.get("uid");
         if (null == uidClaim || StringUtils.isEmpty(uidClaim.asString())) {
+            return null;
         }
         return Long.valueOf(uidClaim.asString());
     }
