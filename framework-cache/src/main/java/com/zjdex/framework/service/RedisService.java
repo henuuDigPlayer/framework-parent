@@ -80,4 +80,22 @@ public interface RedisService {
      * @param timeout 过期时间
      */
     void setHash(String key, Map<String, Object> map, Long timeout);
+
+    /**
+     * 获取hashMap值
+     *
+     * @param key  String key
+     * @param item String 属性名
+     * @return Object
+     */
+    Object getHash(String key, String item);
+
+
+    /**
+     * 获取hashMap值
+     *
+     * @param key  String key
+     * @return Object
+     */
+    Map<String, Object> getHash(String key);
 }

@@ -79,7 +79,7 @@ public class RedisServiceImpl implements RedisService {
     @Override
     public String get(String key) {
         Object value = redisTemplate.boundValueOps(key).get();
-        if(value != null){
+        if (value != null) {
             return value.toString();
         }
         return null;
@@ -135,6 +135,29 @@ public class RedisServiceImpl implements RedisService {
     public void setHash(String key, Map<String, Object> map, Long timeout) {
         this.redisTemplate.opsForHash().putAll(key, map);
         this.expire(key, timeout);
+    }
+
+    /**
+     * 获取hashMap值
+     *
+     * @param key  String key
+     * @param item String 属性名
+     * @return Object
+     */
+    @Override
+    public Object getHash(String key, String item) {
+        return this.redisTemplate.opsForHash().get(key, item);
+    }
+
+    /**
+     * 获取hashMap值
+     *
+     * @param key  String key
+     * @return Object
+     */
+    @Override
+    public Map<String, Object> getHash(String key) {
+        return this.redisTemplate.opsForHash().entries(key);
     }
 
 }
