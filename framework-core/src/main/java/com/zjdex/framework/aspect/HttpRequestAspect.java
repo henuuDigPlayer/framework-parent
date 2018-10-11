@@ -65,7 +65,6 @@ public class HttpRequestAspect {
                 .getDeclaringTypeName() + "." + joinPoint.getSignature().getName());
         // 请求参数
         try {
-            Object[] objects = joinPoint.getArgs();
             logger.info("args = {}",  JSON.toJSONString(joinPoint.getArgs()[0]));
         }catch (Exception e){
             logger.error(e.getMessage());

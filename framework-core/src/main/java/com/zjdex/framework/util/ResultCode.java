@@ -43,7 +43,11 @@ public class ResultCode {
         /**
          * 重复提交
          */
-        SUBMIT_REPEAT(90001, "重复提交");
+        SUBMIT_REPEAT(90001, "重复提交"),
+        /**
+         * 数据过期
+         */
+        DATATIMEOUT(3002, "数据已过期");
 
         private Integer code;
         private String message;

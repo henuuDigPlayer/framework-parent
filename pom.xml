@@ -31,7 +31,6 @@
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <java.version>1.8</java.version>
     <fastjson>1.2.47</fastjson>
-    <boot-starter-redis>1.4.7.RELEASE</boot-starter-redis>
     <starter-data-redis>2.0.2.RELEASE</starter-data-redis>
   </properties>
 

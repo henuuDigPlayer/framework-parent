@@ -18,8 +18,8 @@
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-redis</artifactId>
-            <version>${boot-starter-redis}</version>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+            <version>${starter-data-redis}</version>
         </dependency>
         <dependency>
             <groupId>com.alibaba</groupId>

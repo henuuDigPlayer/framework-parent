@@ -5,6 +5,7 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.zjdex.framework.exception.CodeException;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Calendar;
@@ -31,10 +32,10 @@ public class TokenUtil {
      * @return
      * @throws Exception
      */
-    public static String createToken(Long uid){
+    public static String createToken(Long uid) {
         Date iatDate = new Date();
         Calendar nowTime = Calendar.getInstance();
-        nowTime.add(Calendar.SECOND, (int)ConstantUtil.TIMEOUT);
+        nowTime.add(Calendar.SECOND, (int) ConstantUtil.TIMEOUT);
         Date expiresDate = nowTime.getTime();
 
         //jwt头部信息
@@ -53,20 +54,22 @@ public class TokenUtil {
     }
 
     /**
-     * 解密Token
+     * token 校验、解密
      *
-     * @param token
-     * @return
-     * @throws Exception
+     * @param token String
+     * @return Map
      */
     public static Map<String, Claim> parseToken(String token) {
+        if (StringUtil.isEmpty(token)) {
+            throw new CodeException(ResultCode.Codes.NOT_LOGIN);
+        }
         DecodedJWT jwt = null;
         try {
             JWTVerifier verifier = JWT.require(Algorithm.HMAC256(SECRET)).build();
             jwt = verifier.verify(token);
         } catch (Exception e) {
             e.printStackTrace();
-            return null;
+            throw new CodeException(ResultCode.Codes.NOT_LOGIN);
         }
         return jwt.getClaims();
     }

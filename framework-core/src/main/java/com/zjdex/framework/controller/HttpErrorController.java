@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 public class HttpErrorController implements ErrorController {
+
     private static final String ERROR_PATH = "/error";
     /**
      * 处理未到达controller层的异常，直接抛出自定义异常
