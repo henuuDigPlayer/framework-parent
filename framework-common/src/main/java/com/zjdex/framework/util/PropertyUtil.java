@@ -114,10 +114,11 @@ public class PropertyUtil {
      * @throws IOException
      * @throws TemplateException
      */
-    public static String processEmail(Map<String, Object> parameters, String ftlName) throws IOException,
+    public static String processMessage(Map<String, Object> parameters, String ftlName) throws IOException,
             TemplateException {
         FreeMarkerConfigurer freeMarkerConfigurer = new FreeMarkerConfigurer();
-        Configuration configuration = freeMarkerConfigurer.getConfiguration();
+        freeMarkerConfigurer.setTemplateLoaderPath("/biz");
+        Configuration configuration = freeMarkerConfigurer.createConfiguration();
         Template template = configuration.getTemplate(ftlName);
         return FreeMarkerTemplateUtils.processTemplateIntoString(template, parameters);
     }
