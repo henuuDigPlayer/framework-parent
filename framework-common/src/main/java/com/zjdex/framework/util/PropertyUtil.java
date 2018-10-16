@@ -1,12 +1,18 @@
 package com.zjdex.framework.util;
 
 
+import freemarker.template.Configuration;
+import freemarker.template.Template;
+import freemarker.template.TemplateException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
+import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Map;
 import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -98,4 +104,22 @@ public class PropertyUtil {
         //返回后替换的字符串
         return buffer.toString();
     }
+
+    /**
+     * 获取发送邮件或者特殊短信内容
+     *
+     * @param parameters Map<String, Object>参数
+     * @param ftlName    String 文件名
+     * @return String
+     * @throws IOException
+     * @throws TemplateException
+     */
+    public static String processEmail(Map<String, Object> parameters, String ftlName) throws IOException,
+            TemplateException {
+        FreeMarkerConfigurer freeMarkerConfigurer = new FreeMarkerConfigurer();
+        Configuration configuration = freeMarkerConfigurer.getConfiguration();
+        Template template = configuration.getTemplate(ftlName);
+        return FreeMarkerTemplateUtils.processTemplateIntoString(template, parameters);
+    }
+
 }
