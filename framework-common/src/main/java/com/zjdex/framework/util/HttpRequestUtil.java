@@ -27,26 +27,7 @@ public class HttpRequestUtil {
      * 发送HttpPost请求
      *
      * @param url    服务地址
-     * @param params Map<String, Object>对象
-     * @return json字符串
-     */
-    public static String doPost(String url, Map<String, Object> params,
-                                Map<String, String> headers) {
-        String result = "";
-        try {
-            HttpURLConnection connection = getConnection(url, headers);
-            result = writeResponse(connection, JsonUtil.objectToJson(params));
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        return result;
-    }
-
-    /**
-     * 发送HttpPost请求
-     *
-     * @param url    服务地址
-     * @param params String请求对象
+     * @param params String 请求参数
      * @return json字符串
      */
     public static String doPost(String url, String params,
