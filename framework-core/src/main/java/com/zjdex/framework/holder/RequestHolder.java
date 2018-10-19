@@ -15,6 +15,7 @@ public class RequestHolder {
 
     /**
      * 获取token
+     *
      * @return String
      */
     public static String getToken() {

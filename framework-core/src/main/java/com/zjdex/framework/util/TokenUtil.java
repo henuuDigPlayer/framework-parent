@@ -46,7 +46,6 @@ public class TokenUtil {
         String token = JWT.create().withHeader(map).withClaim("iss", "service")
                 .withClaim("aud", "web")
                 .withClaim("uid", null == uid ? null : uid.toString())
-                .withIssuedAt(iatDate)
                 .withExpiresAt(expiresDate)
                 .sign(Algorithm.HMAC256(SECRET));
 
@@ -87,6 +86,13 @@ public class TokenUtil {
             return null;
         }
         return Long.valueOf(uidClaim.asString());
+    }
+
+    public static void main(String[] args){
+
+        String token = TokenUtil.createToken(132L);
+        TokenUtil.parseToken("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJ3ZWIiLCJ1aWQiOiIxMjQiLCJpc3MiOiJzZXJ2aWNlIiwiZXhwIjoxNTM5NzU5MzgzLCJpYXQiOjE1Mzk3NTc1ODN9.aYNp6rDs0WTkiw3-NJt7JQ00lHgCLx59e7Gzh9GaLEQ");
+        System.out.println(TokenUtil.getUid("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJ3ZWIiLCJ1aWQiOiIxMjQiLCJpc3MiOiJzZXJ2aWNlIiwiZXhwIjoxNTM5NzU5MzgzLCJpYXQiOjE1Mzk3NTc1ODN9.aYNp6rDs0WTkiw3-NJt7JQ00lHgCLx59e7Gzh9GaLEQ"));
     }
 
 }
