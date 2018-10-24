@@ -6,7 +6,6 @@ import com.zjdex.framework.exception.CodeException;
 import com.zjdex.framework.util.JsonUtil;
 import com.zjdex.framework.util.ResponseUtil;
 import com.zjdex.framework.util.ResultCode;
-import com.zjdex.framework.util.StringUtil;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
@@ -26,12 +25,6 @@ import javax.servlet.http.HttpServletRequest;
  * @author: lindj
  * @date: 2018/4/12 14:43
  * @description: 数据统一处理类
- * 格式：
- * {
- * "code":,
- * "data":,
- * "message":
- * }
  */
 @Aspect
 @Component
