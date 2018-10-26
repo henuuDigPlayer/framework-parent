@@ -32,6 +32,9 @@ public class HttpRequestUtil {
      */
     public static String doPost(String url, String params,
                                 Map<String, String> headers) {
+        logger.info("url={}", url);
+        logger.info("headerParams={}", JsonUtil.objectToJson(headers));
+        logger.info("bodyParams={}", JsonUtil.objectToJson(params));
         String result = "";
         try {
             HttpURLConnection connection = getConnection(url, headers);
@@ -39,6 +42,7 @@ public class HttpRequestUtil {
         }catch (Exception e){
             e.printStackTrace();
         }
+        logger.info("result={}", result);
         return result;
     }
 
