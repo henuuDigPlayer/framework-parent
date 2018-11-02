@@ -47,7 +47,11 @@ public class ResultCode {
         /**
          * 数据过期
          */
-        DATATIMEOUT(3002, "数据已过期");
+        DATATIMEOUT(3002, "数据已过期"),
+        /**
+         * 未注册
+         */
+        NOT_REGIST(3003, "未注册");
 
         private Integer code;
         private String message;
