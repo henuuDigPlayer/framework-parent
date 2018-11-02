@@ -15,11 +15,23 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * @author lindj
  * @create 2018/9/25
- * @desc 功能描述
+ * @desc 获取HttpServletRequest
  **/
 public class RequestHolder {
 
     private static final Logger logger = LoggerFactory.getLogger(RequestHolder.class.getName());
+
+
+    /**
+     * 获取HttpServletRequest
+     *
+     * @return HttpServletRequest
+     */
+    public static HttpServletRequest getRequest() {
+        RequestAttributes requestAttributes = RequestContextHolder.currentRequestAttributes();
+        HttpServletRequest request = ((ServletRequestAttributes) requestAttributes).getRequest();
+        return request;
+    }
 
     /**
      * 获取token
@@ -27,9 +39,7 @@ public class RequestHolder {
      * @return String
      */
     public static String getToken() {
-        RequestAttributes requestAttributes = RequestContextHolder.currentRequestAttributes();
-        HttpServletRequest request = ((ServletRequestAttributes) requestAttributes).getRequest();
-        return request.getHeader("token");
+        return getHeader("token");
     }
 
     /**
@@ -48,6 +58,16 @@ public class RequestHolder {
             }
         }
         return token;
+    }
+
+    /**
+     * 获取请求头信息
+     *
+     * @param key String
+     * @return String
+     */
+    public static String getHeader(String key) {
+        return getRequest().getHeader(key);
     }
 
 }

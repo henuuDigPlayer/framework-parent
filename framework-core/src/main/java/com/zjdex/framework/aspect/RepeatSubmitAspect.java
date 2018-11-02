@@ -8,13 +8,21 @@ import com.zjdex.framework.util.ConstantUtil;
 import com.zjdex.framework.util.ResultCode;
 import com.zjdex.framework.util.StringUtil;
 import org.aspectj.lang.JoinPoint;
-import org.aspectj.lang.annotation.*;
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.AfterThrowing;
+import org.aspectj.lang.annotation.AfterReturning;
+import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Before;
+import org.aspectj.lang.annotation.Pointcut;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
 import java.util.UUID;
+
 
 /**
  * @author: lindj
@@ -28,10 +36,12 @@ public class RepeatSubmitAspect {
     private static final Logger logger =
             LoggerFactory.getLogger(RepeatSubmitAspect.class.getName());
 
+    private static final String REPEAT_SUBMIT = "repeat_submit";
+
     @Autowired
     private RedisService redisService;
 
-    @Pointcut("@within(com.zjdex.controller.*)")
+    @Pointcut("execution(public * com.zjdex.controller..*(..))")
     public void execute() {
     }
 
@@ -42,19 +52,44 @@ public class RepeatSubmitAspect {
      * @param repeatSubmitAnnotation RepeatSubmitAnnotation
      */
     @Before("execute() && @annotation(repeatSubmitAnnotation)")
-    public void doBefore(JoinPoint joinPoint, RepeatSubmitAnnotation repeatSubmitAnnotation) {
+    public void doBefore(JoinPoint joinPoint, RepeatSubmitAnnotation repeatSubmitAnnotation) throws IOException {
         if (repeatSubmitAnnotation != null) {
-            String key = getRepeatSubmitKey(joinPoint);
-            String value = redisService.get(key);
-            if (!StringUtil.isEmpty(value)) {
-                throw new CodeException(ResultCode.Codes.SUBMIT_REPEAT);
-            }
-            boolean isExist = this.redisService.setNX(key, UUID.randomUUID().toString(),
-                    ConstantUtil.REQUEST_TIMEOUT);
-            if (!isExist) {
-                throw new CodeException(ResultCode.Codes.BUSINESS_ERROR);
+            Boolean remove = repeatSubmitAnnotation.remove();
+            Boolean create = repeatSubmitAnnotation.create();
+            // 删除标识
+            if (remove) {
+                String flag = RequestHolder.getHeader("flag");
+                if (StringUtil.isEmpty(flag) || StringUtil.isEmpty(redisService.get(flag))) {
+                    throw new CodeException(ResultCode.Codes.DATATIMEOUT);
+                }
+                boolean isExist = this.redisService.setNX(this.getRepeatSubmitKey(flag),
+                        UUID.randomUUID().toString(),
+                        ConstantUtil.REQUEST_TIMEOUT);
+                if (!isExist) {
+                    throw new CodeException(ResultCode.Codes.SUBMIT_REPEAT);
+                }
             }
         }
+    }
+
+    /**
+     * 环绕
+     * @param proceedingJoinPoint ProceedingJoinPoint
+     * @param repeatSubmitAnnotation RepeatSubmitAnnotation
+     * @return Object
+     * @throws Throwable
+     */
+    @Around("execute() && @annotation(repeatSubmitAnnotation)")
+    public Object doAround(ProceedingJoinPoint proceedingJoinPoint, RepeatSubmitAnnotation repeatSubmitAnnotation) throws Throwable {
+        if (repeatSubmitAnnotation != null) {
+            Boolean create = repeatSubmitAnnotation.create();
+            if (create) {
+                String flag = UUID.randomUUID().toString();
+                redisService.set(flag, flag, ConstantUtil.TIMEOUT);
+                return flag;
+            }
+        }
+        return proceedingJoinPoint.proceed();
     }
 
     /**
@@ -63,21 +98,20 @@ public class RepeatSubmitAspect {
      * @param joinPoint              JoinPoint
      * @param repeatSubmitAnnotation RepeatSubmitAnnotation
      */
-    @AfterReturning("execute() && @annotation(repeatSubmitAnnotation)")
-    public void doAfterReturning(JoinPoint joinPoint,
-                                 RepeatSubmitAnnotation repeatSubmitAnnotation) {
+    @AfterReturning(value = "execute() && @annotation(repeatSubmitAnnotation)")
+    public void doAfterReturning(JoinPoint joinPoint, RepeatSubmitAnnotation repeatSubmitAnnotation) {
         if (repeatSubmitAnnotation != null) {
-            String key = getRepeatSubmitKey(joinPoint);
-            String value = redisService.get(key);
-            if (!StringUtil.isEmpty(value)) {
-                this.redisService.del(key);
+            Boolean remove = repeatSubmitAnnotation.remove();
+            if (remove) {
+                deleteKey(RequestHolder.getHeader("flag"));
             }
         }
     }
 
     /**
      * 请求其他异常
-     * @param joinPoint JoinPoint
+     *
+     * @param joinPoint              JoinPoint
      * @param e
      * @param repeatSubmitAnnotation RepeatSubmitAnnotation
      */
@@ -85,30 +119,36 @@ public class RepeatSubmitAspect {
     public void doAfterThrowing(JoinPoint joinPoint, Throwable e,
                                 RepeatSubmitAnnotation repeatSubmitAnnotation) {
         if (repeatSubmitAnnotation != null && (e instanceof CodeException == false)) {
-            String key = getRepeatSubmitKey(joinPoint);
-            String value = redisService.get(key);
-            if (!StringUtil.isEmpty(value)) {
-                this.redisService.del(key);
-            }
+            deleteKey(RequestHolder.getHeader("flag"));
         }
     }
 
+    /**
+     * 删除缓存
+     *
+     * @param flag String key
+     */
+    private void deleteKey(String flag) {
+        String key = getRepeatSubmitKey(flag);
+        String flagValue = redisService.get(flag);
+        String value = redisService.get(key);
+        if (!StringUtil.isEmpty(value)) {
+            this.redisService.del(key);
+        }
+        if (!StringUtil.isEmpty(flagValue)) {
+            this.redisService.del(flag);
+        }
+    }
 
     /**
      * 获取重复提交key
      *
-     * @param joinPoint JoinPoint
      * @return String
      */
-    private String getRepeatSubmitKey(JoinPoint joinPoint) {
-        String token = RequestHolder.getTokenWithException();
+    private String getRepeatSubmitKey(String flag) {
         StringBuilder builder = new StringBuilder();
-        builder.append(token)
-                .append(".")
-                .append(joinPoint.getSignature().getDeclaringTypeName())
-                .append(".")
-                .append(joinPoint.getSignature().getName());
+        builder.append(REPEAT_SUBMIT).append(":").append(flag);
+        logger.info(builder.toString());
         return builder.toString();
     }
-
 }

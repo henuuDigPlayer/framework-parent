@@ -6,6 +6,7 @@ import com.zjdex.framework.exception.CodeException;
 import com.zjdex.framework.util.JsonUtil;
 import com.zjdex.framework.util.ResponseUtil;
 import com.zjdex.framework.util.ResultCode;
+import com.zjdex.framework.util.StringUtil;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
@@ -58,7 +59,9 @@ public class HttpRequestAspect {
                 .getDeclaringTypeName() + "." + joinPoint.getSignature().getName());
         // 请求参数
         try {
-            logger.info("args = {}",  JSON.toJSONString(joinPoint.getArgs()[0]));
+            if(!StringUtil.isEmpty(joinPoint.getArgs())){
+                logger.info("args = {}",  JSON.toJSONString(joinPoint.getArgs()[0]));
+            }
         }catch (Exception e){
             logger.error(e.getMessage());
         }

@@ -49,9 +49,10 @@ public class RedisServiceImpl implements RedisService {
      */
     @Override
     public boolean setNX(String key, String value, Long expireTime) {
-        if (this.redisTemplate.getConnectionFactory().getConnection().setNX(key.getBytes(),
-                value.getBytes())) {
-            redisTemplate.expire(key, expireTime, TimeUnit.SECONDS);
+        if (this.redisTemplate.opsForValue().setIfAbsent(key, value)) {
+            if(expireTime != null) {
+                redisTemplate.expire(key, expireTime, TimeUnit.SECONDS);
+            }
             return true;
         }
         return false;
@@ -78,12 +79,13 @@ public class RedisServiceImpl implements RedisService {
      */
     @Override
     public String get(String key) {
-        Object value = redisTemplate.boundValueOps(key).get();
+        Object value = redisTemplate.opsForValue().get(key);
         if (value != null) {
             return value.toString();
         }
         return null;
     }
+
 
     /**
      * 删除缓存
