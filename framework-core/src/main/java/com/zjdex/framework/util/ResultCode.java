@@ -51,7 +51,11 @@ public class ResultCode {
         /**
          * 未注册
          */
-        NOT_REGIST(3003, "未注册");
+        NOT_REGIST(3003, "未注册"),
+        /**
+         * 已注册
+         */
+        REGISTED(3004, "账号已注册");
 
         private Integer code;
         private String message;
