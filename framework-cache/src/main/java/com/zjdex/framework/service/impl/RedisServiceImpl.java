@@ -1,10 +1,15 @@
 package com.zjdex.framework.service.impl;
 
+import com.zjdex.framework.constant.RedisConstant;
 import com.zjdex.framework.service.RedisService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.ReflectionUtils;
+import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisCommands;
 
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -49,13 +54,15 @@ public class RedisServiceImpl implements RedisService {
      */
     @Override
     public boolean setNX(String key, String value, Long expireTime) {
-        if (this.redisTemplate.opsForValue().setIfAbsent(key, value)) {
-            if(expireTime != null) {
-                redisTemplate.expire(key, expireTime, TimeUnit.SECONDS);
+        return (Boolean) redisTemplate.execute((RedisCallback<Boolean>) redisConnection -> {
+            Jedis commands = (Jedis) redisConnection.getNativeConnection();
+            String result = commands.set(key, value, RedisConstant.SET_IF_NOT_EXIST,
+                    RedisConstant.SET_WITH_EXPIRE_TIME, expireTime);
+            if (RedisConstant.LOCK_MSG.equals(result)) {
+                return true;
             }
-            return true;
-        }
-        return false;
+            return false;
+        });
     }
 
     /**
@@ -154,7 +161,7 @@ public class RedisServiceImpl implements RedisService {
     /**
      * 获取hashMap值
      *
-     * @param key  String key
+     * @param key String key
      * @return Object
      */
     @Override

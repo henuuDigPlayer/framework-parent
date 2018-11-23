@@ -1,6 +1,7 @@
 package com.zjdex.framework.config;
 
 import com.alibaba.fastjson.parser.ParserConfig;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CachingConfigurerSupport;
 import org.springframework.cache.annotation.EnableCaching;
@@ -11,6 +12,10 @@ import org.springframework.data.redis.cache.RedisCacheConfiguration;
 import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.cache.RedisCacheWriter;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.connection.RedisPassword;
+import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
+import org.springframework.data.redis.connection.jedis.JedisClientConfiguration;
+import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
@@ -27,6 +32,9 @@ import java.time.Duration;
 @EnableCaching
 public class RedisConfig  extends CachingConfigurerSupport {
 
+    @Autowired
+    private RedisParams redisParams;
+
     @Bean
     public KeyGenerator keyGenerators() {
         return new KeyGenerator() {
@@ -42,8 +50,24 @@ public class RedisConfig  extends CachingConfigurerSupport {
             }
         };
     }
+
     @Bean
-    CacheManager cacheManager(RedisConnectionFactory connectionFactory) {
+    public JedisConnectionFactory JedisConnectionFactory(){
+        RedisStandaloneConfiguration redisStandaloneConfiguration = new RedisStandaloneConfiguration ();
+        redisStandaloneConfiguration.setHostName(this.redisParams.getHost());
+        redisStandaloneConfiguration.setPort(this.redisParams.getPort());
+        //由于我们使用了动态配置库,所以此处省略
+        redisStandaloneConfiguration.setDatabase(this.redisParams.getDatabase());
+        redisStandaloneConfiguration.setPassword(RedisPassword.of(this.redisParams.getPassword()));
+        JedisClientConfiguration.JedisClientConfigurationBuilder jedisClientConfiguration = JedisClientConfiguration.builder();
+        jedisClientConfiguration.connectTimeout(Duration.ofMillis(this.redisParams.getTimeout()));
+        JedisConnectionFactory factory = new JedisConnectionFactory(redisStandaloneConfiguration,
+                jedisClientConfiguration.build());
+        return factory;
+    }
+
+    @Bean
+    CacheManager cacheManager(JedisConnectionFactory connectionFactory) {
         //初始化一个RedisCacheWriter
         RedisCacheWriter redisCacheWriter = RedisCacheWriter.nonLockingRedisCacheWriter(connectionFactory);
         RedisCacheConfiguration defaultCacheConfig = RedisCacheConfiguration.defaultCacheConfig();
@@ -61,7 +85,7 @@ public class RedisConfig  extends CachingConfigurerSupport {
     }
 
     @Bean
-    public RedisTemplate<Object, Object> redisTemplate(RedisConnectionFactory redisConnectionFactory) {
+    public RedisTemplate<Object, Object> redisTemplate(JedisConnectionFactory redisConnectionFactory) {
         RedisTemplate<Object, Object> template = new RedisTemplate<>();
         //使用fastjson序列化
         FastJsonRedisSerializer fastJsonRedisSerializer = new FastJsonRedisSerializer(Object.class);
