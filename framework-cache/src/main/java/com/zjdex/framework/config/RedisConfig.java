@@ -19,6 +19,7 @@ import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
+import redis.clients.jedis.JedisPoolConfig;
 
 import java.lang.reflect.Method;
 import java.time.Duration;
@@ -51,19 +52,36 @@ public class RedisConfig  extends CachingConfigurerSupport {
         };
     }
 
+    /**
+     * 连接池配置信息
+     * @return
+     */
     @Bean
-    public JedisConnectionFactory JedisConnectionFactory(){
+    public JedisPoolConfig jedisPoolConfig() {
+        JedisPoolConfig jedisPoolConfig = new JedisPoolConfig();
+        //最大连接数
+        jedisPoolConfig.setMaxTotal(this.redisParams.getPool().get("max-active"));
+        //最小空闲连接数
+        jedisPoolConfig.setMinIdle(this.redisParams.getPool().get("min-idle"));
+        //当池内没有可用的连接时，最大等待时间
+        jedisPoolConfig.setMaxWaitMillis(this.redisParams.getPool().get("max-wait"));
+        // 最大空闲数
+        jedisPoolConfig.setMaxIdle(this.redisParams.getPool().get("max-idle"));
+        return jedisPoolConfig;
+    }
+    @Bean
+    public JedisConnectionFactory JedisConnectionFactory(JedisPoolConfig jedisPoolConfig){
         RedisStandaloneConfiguration redisStandaloneConfiguration = new RedisStandaloneConfiguration ();
         redisStandaloneConfiguration.setHostName(this.redisParams.getHost());
         redisStandaloneConfiguration.setPort(this.redisParams.getPort());
         //由于我们使用了动态配置库,所以此处省略
         redisStandaloneConfiguration.setDatabase(this.redisParams.getDatabase());
         redisStandaloneConfiguration.setPassword(RedisPassword.of(this.redisParams.getPassword()));
-        JedisClientConfiguration.JedisClientConfigurationBuilder jedisClientConfiguration = JedisClientConfiguration.builder();
-        jedisClientConfiguration.connectTimeout(Duration.ofMillis(this.redisParams.getTimeout()));
-        JedisConnectionFactory factory = new JedisConnectionFactory(redisStandaloneConfiguration,
-                jedisClientConfiguration.build());
-        return factory;
+        JedisClientConfiguration.JedisPoolingClientConfigurationBuilder jedisPool
+                = (JedisClientConfiguration.JedisPoolingClientConfigurationBuilder) JedisClientConfiguration.builder();
+        jedisPool.poolConfig(jedisPoolConfig);
+        JedisClientConfiguration  jedisClientConfiguration = jedisPool.build();
+        return new JedisConnectionFactory(redisStandaloneConfiguration, jedisClientConfiguration);
     }
 
     @Bean

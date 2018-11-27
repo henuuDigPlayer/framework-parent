@@ -3,6 +3,8 @@ package com.zjdex.framework.config;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
+import java.util.Map;
+
 /**
  * @author: lindj
  * @date: 2018/11/23
@@ -16,7 +18,7 @@ public class RedisParams {
     private Integer database;
     private Integer port;
     private String password;
-
+    private Map<String, Integer> pool;
     private Long timeout;
 
     public String getHost() {
@@ -57,5 +59,13 @@ public class RedisParams {
 
     public void setTimeout(Long timeout) {
         this.timeout = timeout;
+    }
+
+    public Map<String, Integer> getPool() {
+        return pool;
+    }
+
+    public void setPool(Map<String, Integer> pool) {
+        this.pool = pool;
     }
 }

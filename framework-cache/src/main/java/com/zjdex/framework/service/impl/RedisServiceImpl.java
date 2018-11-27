@@ -34,14 +34,16 @@ public class RedisServiceImpl implements RedisService {
      */
     @Override
     public boolean set(String key, Object value, Long expireTime) {
-        boolean result = false;
         try {
+            if(expireTime == null){
+                redisTemplate.opsForValue().set(key, value);
+                return true;
+            }
             redisTemplate.opsForValue().set(key, value, expireTime, TimeUnit.SECONDS);
-            result = true;
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return result;
+        return true;
     }
 
 
