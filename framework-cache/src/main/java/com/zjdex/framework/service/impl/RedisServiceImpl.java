@@ -5,6 +5,7 @@ import com.zjdex.framework.service.RedisService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.ReflectionUtils;
@@ -24,6 +25,8 @@ public class RedisServiceImpl implements RedisService {
 
     @Autowired
     private RedisTemplate redisTemplate;
+    @Autowired
+    private StringRedisTemplate stringRedisTemplate;
 
     /**
      * 写入缓存
@@ -56,7 +59,7 @@ public class RedisServiceImpl implements RedisService {
      */
     @Override
     public boolean setNX(String key, String value, Long expireTime) {
-        return (Boolean) redisTemplate.execute((RedisCallback<Boolean>) redisConnection -> {
+        return (Boolean) stringRedisTemplate.execute((RedisCallback<Boolean>) redisConnection -> {
             Jedis commands = (Jedis) redisConnection.getNativeConnection();
             String result = commands.set(key, value, RedisConstant.SET_IF_NOT_EXIST,
                     RedisConstant.SET_WITH_EXPIRE_TIME, expireTime);
