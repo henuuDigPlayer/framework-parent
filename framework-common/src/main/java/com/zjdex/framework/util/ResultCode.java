@@ -55,7 +55,8 @@ public class ResultCode {
         /**
          * 已注册
          */
-        REGISTED(3004, "账号已注册");
+        REGISTED(3004, "账号已注册"),
+        SQL_INJECTION(90002, "请求数据存在安全风险");
 
         private Integer code;
         private String message;
