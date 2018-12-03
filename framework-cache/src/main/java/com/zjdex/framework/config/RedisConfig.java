@@ -8,13 +8,16 @@ import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.interceptor.KeyGenerator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.redis.cache.RedisCacheConfiguration;
 import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.cache.RedisCacheWriter;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.script.DefaultRedisScript;
 import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
+import org.springframework.scripting.support.ResourceScriptSource;
 
 import java.lang.reflect.Method;
 import java.time.Duration;
@@ -63,6 +66,14 @@ public class RedisConfig  extends CachingConfigurerSupport {
     @SuppressWarnings("rawtypes")
     public RedisSerializer fastJson2JsonRedisSerializer() {
         return new FastJsonRedisSerializer<Object>(Object.class);
+    }
+
+    @Bean(name = "lockRedisScript")
+    public DefaultRedisScript<Long> redisLockScript(){
+        DefaultRedisScript<Long> redisScript = new DefaultRedisScript<Long>();
+        redisScript.setScriptSource(new ResourceScriptSource(new ClassPathResource("lock.lua")));
+        redisScript.setResultType(Long.class);
+        return redisScript;
     }
 
     @Bean

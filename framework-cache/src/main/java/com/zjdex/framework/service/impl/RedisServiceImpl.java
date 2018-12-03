@@ -6,12 +6,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.core.script.DefaultRedisScript;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.ReflectionUtils;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisCommands;
 
+import javax.annotation.Resource;
+import java.util.Collections;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -27,6 +30,8 @@ public class RedisServiceImpl implements RedisService {
     private RedisTemplate redisTemplate;
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
+    @Resource(name = "lockRedisScript")
+    private DefaultRedisScript<Long> lockRedisScript;
 
     /**
      * 写入缓存
@@ -52,9 +57,9 @@ public class RedisServiceImpl implements RedisService {
 
     /**
      * 写入缓存
-     *
      * @param key   String
      * @param value String
+     * @param expireTime long 毫秒
      * @return boolean
      */
     @Override

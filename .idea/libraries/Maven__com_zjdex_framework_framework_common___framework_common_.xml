@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: com.zjdex.framework:framework-common:${framework-common}">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/zjdex/framework/framework-common/${framework-common}/framework-common-${framework-common}.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/com/zjdex/framework/framework-common/${framework-common}/framework-common-${framework-common}-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/zjdex/framework/framework-common/${framework-common}/framework-common-${framework-common}-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

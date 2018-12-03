@@ -81,7 +81,7 @@ public class HttpRequestAspect {
         try {
             object = proceedingJoinPoint.proceed();
         } catch (Exception e) {
-            e.printStackTrace();
+//            e.printStackTrace();
             logger.error(e.getMessage());
             return dealException(e);
         }
@@ -112,7 +112,7 @@ public class HttpRequestAspect {
         if (e instanceof CodeException) {
             return ResponseUtil.error((CodeException) e);
         }
-        return ResponseUtil.error(ResultCode.Codes.BUSINESS_ERROR);
+        return ResponseUtil.error(ResultCode.Codes.BUSINESS_ERROR.getCode(), e.getMessage());
     }
 
     private HttpServletRequest getRequest() {

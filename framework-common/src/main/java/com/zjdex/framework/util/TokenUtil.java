@@ -6,12 +6,15 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.zjdex.framework.exception.CodeException;
+import com.zjdex.framework.holder.RequestHolder;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+
+import static com.zjdex.framework.holder.RequestHolder.getToken;
 
 /**
  * @author lindj
@@ -86,6 +89,35 @@ public class TokenUtil {
             return null;
         }
         return Long.valueOf(uidClaim.asString());
+    }
+
+
+    /**
+     * 获取token
+     *
+     * @return String
+     */
+    public static String getToken() {
+        return RequestHolder.getHeader("token");
+    }
+
+
+    /**
+     * 获取token
+     *
+     * @return String
+     */
+    public static String getTokenWithException() {
+        String token = getToken();
+        if (!StringUtil.isEmpty(token)) {
+            try {
+                TokenUtil.parseToken(token);
+            } catch (Exception e) {
+                e.printStackTrace();
+                throw new CodeException(ResultCode.Codes.NOT_LOGIN);
+            }
+        }
+        return token;
     }
 
     public static void main(String[] args){
