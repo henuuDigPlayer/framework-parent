@@ -4,19 +4,14 @@ import com.zjdex.framework.exception.CodeException;
 import com.zjdex.framework.holder.ResponseHolder;
 import com.zjdex.framework.util.CheckSqlInjectionUtil;
 import com.zjdex.framework.util.ResultCode;
-import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.util.ContentCachingRequestWrapper;
-import org.springframework.web.util.ContentCachingResponseWrapper;
 
 import javax.servlet.*;
-import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
-import java.nio.charset.Charset;
 
 /**
  * @author: lindj
@@ -42,12 +37,20 @@ public class HttpCacheRequestFilter implements Filter {
         response.addHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
         response.addHeader("Access-Control-Allow-Headers", "Origin, No-Cache, X-Requested-With, " +
                 "If-Modified-Since, Pragma, Last-Modified, Cache-Control, Expires, Content-Type, X-E4M-With");
+        response.setCharacterEncoding("utf-8");
+        response.setContentType("text/html;charset=utf-8");
 
         try {
             MyHttpServletRequestWrapper requestWrapper = new MyHttpServletRequestWrapper(request);
             filterChain.doFilter(requestWrapper, response);
         }catch (Exception e){
-            ResponseHolder.writeResponse(response, ResultCode.Codes.SQL_INJECTION);
+            if(e instanceof  CodeException) {
+                ResponseHolder.writeResponse(response, ResultCode.Codes.SQL_INJECTION);
+            }
+            else{
+                e.printStackTrace();
+                ResponseHolder.writeResponse(response, ResultCode.Codes.BUSINESS_ERROR);
+            }
             return;
         }
 
