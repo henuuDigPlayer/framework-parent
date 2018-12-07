@@ -81,11 +81,11 @@ public class HttpRequestAspect {
         try {
             object = proceedingJoinPoint.proceed();
         } catch (Exception e) {
-//            e.printStackTrace();
+            e.printStackTrace();
             logger.error(e.getMessage());
             return dealException(e);
         }
-        return ResponseUtil.success(object);
+        return object;
     }
 
     /**
