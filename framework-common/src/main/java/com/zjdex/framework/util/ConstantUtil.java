@@ -16,6 +16,8 @@ public interface ConstantUtil {
      */
     long REQUEST_TIMEOUT = 10;
 
+    long CONNECTION_TIMEOUT = 10 * 1000L;
+
     /**
      * 缓存验证码前缀
      */

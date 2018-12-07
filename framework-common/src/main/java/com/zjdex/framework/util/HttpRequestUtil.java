@@ -1,15 +1,15 @@
 package com.zjdex.framework.util;
 
+import org.jdom2.Element;
+import org.jdom2.JDOMException;
+import org.jdom2.input.SAXBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.io.InputStream;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
@@ -23,8 +23,12 @@ public class HttpRequestUtil {
 
     private static final Logger logger = LoggerFactory.getLogger(HttpRequestUtil.class);
 
+    private static final String JSON = "application/json";
+
+    private static final String FORM_URLENCODED = "application/x-www-form-urlencoded";
+
     /**
-     * 发送HttpPost请求
+     * 发送HttpPost请求 json
      *
      * @param url    服务地址
      * @param params String 请求参数
@@ -37,16 +41,43 @@ public class HttpRequestUtil {
         logger.info("bodyParams={}", JsonUtil.objectToJson(params));
         String result = "";
         try {
-            HttpURLConnection connection = getConnection(url, headers);
+            HttpURLConnection connection = getConnection(url, JSON, headers);
             result = writeResponse(connection, params);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         logger.info("result={}", result);
         return result;
     }
 
-    public static HttpURLConnection getConnection(String url, Map<String, String> headers) throws IOException {
+    /**
+     * 发送HttpPost请求  x-www-form-urlencoded
+     *
+     * @param url    String
+     * @param params String
+     * @return String
+     */
+    public static String doPost(String url, String params) {
+        String result = "";
+        try {
+            HttpURLConnection connection = getConnection(url, FORM_URLENCODED, null);
+            result = writeResponse(connection, params);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    /**
+     * 获取请求 connection
+     *
+     * @param url     请求地址
+     * @param headers 请求头
+     * @return
+     * @throws IOException
+     */
+    public static HttpURLConnection getConnection(String url, String contentType, Map<String,
+            String> headers) throws IOException {
         URL conUrl = new URL(url);
         HttpURLConnection connection = (HttpURLConnection) conUrl.openConnection();
         connection.setDoOutput(true);
@@ -54,8 +85,9 @@ public class HttpRequestUtil {
         connection.setUseCaches(false);
         connection.setInstanceFollowRedirects(true);
         connection.setRequestMethod("POST");
-        connection.setRequestProperty("Accept", "application/json");
-        connection.setRequestProperty("Content-Type", "application/json");
+        connection.setRequestProperty("Accept", contentType);
+        connection.setRequestProperty("Content-Type", contentType);
+        connection.setConnectTimeout((int) ConstantUtil.CONNECTION_TIMEOUT);
         if (headers != null) {
             Set<Map.Entry<String, String>> sets = headers.entrySet();
             if (!StringUtil.isEmpty(sets)) {
@@ -68,6 +100,7 @@ public class HttpRequestUtil {
         }
         return connection;
     }
+
 
     public static String writeResponse(HttpURLConnection connection, String requestContent) throws IOException {
         BufferedReader in = null;
@@ -97,4 +130,18 @@ public class HttpRequestUtil {
         }
         return result.toString();
     }
+
+    private static String xml2JSON(byte[] xml) {
+        InputStream is = new ByteArrayInputStream(xml);
+        SAXBuilder sb = new SAXBuilder();
+        org.jdom2.Document doc = null;
+        try {
+            doc = sb.build(is);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        Element root = doc.getRootElement();
+        return root.getValue();
+    }
+
 }
