@@ -63,7 +63,6 @@ public class RedisConfig  extends CachingConfigurerSupport {
     }
 
     @Bean
-    @SuppressWarnings("rawtypes")
     public RedisSerializer fastJson2JsonRedisSerializer() {
         return new FastJsonRedisSerializer<Object>(Object.class);
     }
@@ -81,7 +80,7 @@ public class RedisConfig  extends CachingConfigurerSupport {
         RedisTemplate<Object, Object> template = new RedisTemplate<>();
         //使用fastjson序列化
         FastJsonRedisSerializer fastJsonRedisSerializer = new FastJsonRedisSerializer(Object.class);
-        ParserConfig.getGlobalInstance().addAccept("com.zjdex.");
+//        ParserConfig.getGlobalInstance().addAccept("com.zjdex.");
         // value值的序列化采用fastJsonRedisSerializer
         template.setValueSerializer(fastJsonRedisSerializer);
         template.setHashValueSerializer(fastJsonRedisSerializer);
