@@ -20,8 +20,8 @@
         <mybatis-spring-boot>1.3.0</mybatis-spring-boot>
         <mysql-connector>5.1.39</mysql-connector>
         <druid>1.1.9</druid>
-        <framework-common>1.0</framework-common>
-        <framework-cache>1.0</framework-cache>
+        <framework-common>1.1</framework-common>
+        <framework-cache>1.1</framework-cache>
     </properties>
 
     <dependencies>

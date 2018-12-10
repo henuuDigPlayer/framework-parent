@@ -13,7 +13,7 @@
     <name>framework-cache</name>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <framework-common>1.0</framework-common>
+        <framework-common>1.1</framework-common>
     </properties>
 
     <dependencies>

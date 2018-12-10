@@ -16,7 +16,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <framework-core>1.0</framework-core>
+        <framework-core>1.1</framework-core>
     </properties>
 
     <dependencies>
