@@ -14,17 +14,20 @@ public interface RedisService {
     /**
      * 写入缓存
      *
-     * @param key   String
-     * @param value Object
+     * @param key        String
+     * @param value      Object
+     * @param expireTime Long
      * @return boolean
      */
     boolean set(final String key, Object value, Long expireTime);
 
+
     /**
      * 写入缓存
      *
-     * @param key   String
-     * @param value String
+     * @param key        String
+     * @param value      Object
+     * @param expireTime Long
      * @return boolean
      */
     boolean setNX(final String key, String value, Long expireTime);
@@ -94,7 +97,7 @@ public interface RedisService {
     /**
      * 获取hashMap值
      *
-     * @param key  String key
+     * @param key String key
      * @return Object
      */
     Map<String, Object> getHash(String key);
