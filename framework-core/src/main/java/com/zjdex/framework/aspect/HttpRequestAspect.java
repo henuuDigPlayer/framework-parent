@@ -85,7 +85,7 @@ public class HttpRequestAspect {
             logger.error(e.getMessage());
             return dealException(e);
         }
-        return object;
+        return ResponseUtil.success(object);
     }
 
     /**
