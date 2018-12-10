@@ -1,2 +1,2 @@
 # framework-parent         
-返回的数据属性为null是，正常返回
+返回的数据属性为null时，属性正常返回
