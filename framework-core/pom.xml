@@ -52,17 +52,6 @@
             <artifactId>framework-common</artifactId>
             <version>${framework-common}</version>
         </dependency>
-        <dependency>
-            <groupId>com.zjdex.framework</groupId>
-            <artifactId>framework-cache</artifactId>
-            <version>${framework-cache}</version>
-        </dependency>
-        <!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
-        <dependency>
-            <groupId>commons-io</groupId>
-            <artifactId>commons-io</artifactId>
-            <version>2.6</version>
-        </dependency>
 
     </dependencies>
 
