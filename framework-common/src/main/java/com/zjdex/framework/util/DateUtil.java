@@ -88,10 +88,21 @@ public class DateUtil {
      * @return Date
      */
     public static Date getDateOffset(Date time, Integer offset) {
-        if(offset == null){
+        if (offset == null) {
             return time;
         }
         Long value = time.getTime() + 24 * 60 * 60 * 1000L * offset;
         return new Date(value);
+    }
+
+    /**
+     * util.Date 转sql.Date
+     *
+     * @param date util.Date
+     * @return sql.Date
+     */
+    public java.sql.Date getSqlDate(Date date) {
+        java.sql.Date value = new java.sql.Date(date.getTime());
+        return value;
     }
 }
