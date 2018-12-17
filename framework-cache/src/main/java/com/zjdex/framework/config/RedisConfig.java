@@ -80,7 +80,8 @@ public class RedisConfig  extends CachingConfigurerSupport {
         RedisTemplate<Object, Object> template = new RedisTemplate<>();
         //使用fastjson序列化
         FastJsonRedisSerializer fastJsonRedisSerializer = new FastJsonRedisSerializer(Object.class);
-//        ParserConfig.getGlobalInstance().addAccept("com.zjdex.");
+        ParserConfig.getGlobalInstance().addAccept("com.zjdex.");
+//        ParserConfig.getGlobalInstance().addAccept("com.taobao.pac.client.sdk.dataobject.");
         // value值的序列化采用fastJsonRedisSerializer
         template.setValueSerializer(fastJsonRedisSerializer);
         template.setHashValueSerializer(fastJsonRedisSerializer);
