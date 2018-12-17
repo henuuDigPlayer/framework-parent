@@ -15,6 +15,7 @@ public class DateUtil {
     public static final String YYYY_MM = "yyyy-MM";
     public static final String YYYY_MM_DD_ZERO = "yyyy-MM-dd 00:00:00";
     public static final String YYYYMMDD = "yyyyMMdd";
+    public static final String YYYY_MM_DD_HH_MM_SS = "yyyy-MM-dd hh:mm:ss";
 
     /**
      * 日期转字符串
