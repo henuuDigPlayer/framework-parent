@@ -136,10 +136,11 @@ public class HttpRequestUtil {
 
     /**
      * 获取当前网络ip
+     *
      * @param request
      * @return
      */
-    public static String getIpAddr(HttpServletRequest request){
+    public static String getIpAddr(HttpServletRequest request) {
         String ipAddress = request.getHeader("x-forwarded-for");
         Integer ipAddressLength = 15;
         String division = ",";
@@ -148,29 +149,29 @@ public class HttpRequestUtil {
         String localhost = "127.0.0.1";
 
         String address = "0:0:0:0:0:0:0:1";
-        if(ipAddress == null || ipAddress.length() == 0 || unknown.equalsIgnoreCase(ipAddress)) {
+        if (ipAddress == null || ipAddress.length() == 0 || unknown.equalsIgnoreCase(ipAddress)) {
             ipAddress = request.getHeader("Proxy-Client-IP");
         }
-        if(ipAddress == null || ipAddress.length() == 0 || unknown.equalsIgnoreCase(ipAddress)) {
+        if (ipAddress == null || ipAddress.length() == 0 || unknown.equalsIgnoreCase(ipAddress)) {
             ipAddress = request.getHeader("WL-Proxy-Client-IP");
         }
-        if(ipAddress == null || ipAddress.length() == 0 || unknown.equalsIgnoreCase(ipAddress)) {
+        if (ipAddress == null || ipAddress.length() == 0 || unknown.equalsIgnoreCase(ipAddress)) {
             ipAddress = request.getRemoteAddr();
-            if(ipAddress.equals(localhost) || ipAddress.equals(address)){
+            if (ipAddress.equals(localhost) || ipAddress.equals(address)) {
                 //根据网卡取本机配置的IP
-                InetAddress inet=null;
+                InetAddress inet = null;
                 try {
                     inet = InetAddress.getLocalHost();
                 } catch (UnknownHostException e) {
                     e.printStackTrace();
                 }
-                ipAddress= inet.getHostAddress();
+                ipAddress = inet.getHostAddress();
             }
         }
         // 对于通过多个代理的情况，第一个IP为客户端真实IP,多个IP按照','分割
-        if(ipAddress!=null && ipAddress.length()> ipAddressLength){
-            if(ipAddress.indexOf(division)>0){
-                ipAddress = ipAddress.substring(0,ipAddress.indexOf(division));
+        if (ipAddress != null && ipAddress.length() > ipAddressLength) {
+            if (ipAddress.indexOf(division) > 0) {
+                ipAddress = ipAddress.substring(0, ipAddress.indexOf(division));
             }
         }
         return ipAddress;
@@ -183,11 +184,34 @@ public class HttpRequestUtil {
         org.jdom2.Document doc = null;
         try {
             doc = sb.build(is);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         Element root = doc.getRootElement();
         return root.getValue();
     }
 
+    public static String getPostArgs(HttpServletRequest request) {
+        BufferedReader br = null;
+        StringBuilder sb = new StringBuilder("");
+        try {
+            br = request.getReader();
+            String str;
+            while ((str = br.readLine()) != null) {
+                sb.append(str);
+            }
+            br.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (null != br) {
+                try {
+                    br.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return sb.toString();
+    }
 }
