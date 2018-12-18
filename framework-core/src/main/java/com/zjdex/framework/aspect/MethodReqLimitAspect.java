@@ -1,14 +1,11 @@
 package com.zjdex.framework.aspect;
 
 import com.zjdex.framework.annotation.MethodReqLimitAnnotation;
-import com.zjdex.framework.annotation.RepeatSubmitAnnotation;
 import com.zjdex.framework.exception.CodeException;
 import com.zjdex.framework.holder.RequestHolder;
 import com.zjdex.framework.service.RedisService;
-import com.zjdex.framework.util.ConstantUtil;
 import com.zjdex.framework.util.HttpRequestUtil;
 import com.zjdex.framework.util.ResultCode;
-import com.zjdex.framework.util.StringUtil;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
@@ -17,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-import java.util.UUID;
 
 /**
  * @author: lindj
