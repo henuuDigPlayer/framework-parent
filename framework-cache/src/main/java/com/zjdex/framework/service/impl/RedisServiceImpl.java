@@ -43,7 +43,7 @@ public class RedisServiceImpl implements RedisService {
     @Override
     public boolean set(String key, Object value, Long expireTime) {
         try {
-            if(expireTime == null){
+            if (expireTime == null) {
                 redisTemplate.opsForValue().set(key, value);
                 return true;
             }
@@ -57,8 +57,9 @@ public class RedisServiceImpl implements RedisService {
 
     /**
      * 写入缓存
-     * @param key   String
-     * @param value String
+     *
+     * @param key        String
+     * @param value      String
      * @param expireTime long 毫秒
      * @return boolean
      */
@@ -177,6 +178,16 @@ public class RedisServiceImpl implements RedisService {
     @Override
     public Map<String, Object> getHash(String key) {
         return this.redisTemplate.opsForHash().entries(key);
+    }
+
+    /**
+     * 批量删除key
+     *
+     * @param keyPattern String
+     */
+    @Override
+    public void delBatch(String keyPattern) {
+        this.redisTemplate.delete(this.redisTemplate.keys(keyPattern));
     }
 
 }

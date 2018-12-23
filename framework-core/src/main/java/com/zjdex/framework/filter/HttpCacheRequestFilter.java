@@ -1,5 +1,6 @@
 package com.zjdex.framework.filter;
 
+import com.zjdex.framework.enums.CodeEnum;
 import com.zjdex.framework.exception.CodeException;
 import com.zjdex.framework.holder.ResponseHolder;
 import com.zjdex.framework.util.CheckSqlInjectionUtil;
@@ -45,7 +46,8 @@ public class HttpCacheRequestFilter implements Filter {
             filterChain.doFilter(requestWrapper, response);
         }catch (Exception e){
             if(e instanceof  CodeException) {
-                ResponseHolder.writeResponse(response, ResultCode.Codes.SQL_INJECTION);
+                CodeException codeException = (CodeException)e;
+                ResponseHolder.writeResponse(response, codeException.getCode(), codeException.getMessage());
             }
             else{
                 e.printStackTrace();

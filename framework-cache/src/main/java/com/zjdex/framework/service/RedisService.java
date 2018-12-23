@@ -101,4 +101,12 @@ public interface RedisService {
      * @return Object
      */
     Map<String, Object> getHash(String key);
+
+
+    /**
+     * 批量删除key
+     *
+     * @param keyPattern String
+     */
+    void delBatch(String keyPattern);
 }

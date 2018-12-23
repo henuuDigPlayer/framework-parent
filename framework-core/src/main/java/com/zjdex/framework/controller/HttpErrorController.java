@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @date: 2018/4/12 14:31
  * @description: 处理未到达controller层的异常
  */
-@RestController
+//@RestController
 public class HttpErrorController implements ErrorController {
 
     private static final String ERROR_PATH = "/error";

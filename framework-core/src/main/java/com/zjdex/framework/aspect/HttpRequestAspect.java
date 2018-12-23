@@ -60,7 +60,10 @@ public class HttpRequestAspect {
         // 请求参数
         try {
             if(!StringUtil.isEmpty(joinPoint.getArgs())){
-                logger.info("args = {}",  JSON.toJSONString(joinPoint.getArgs()[0]));
+                String item = "multipart/form-data";
+                if(!request.getContentType().contains(item)) {
+                    logger.info("args = {}", JSON.toJSONString(joinPoint.getArgs()[0]));
+                }
             }
         }catch (Exception e){
             logger.error(e.getMessage());
