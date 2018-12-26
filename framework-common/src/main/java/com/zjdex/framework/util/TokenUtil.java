@@ -1,6 +1,7 @@
 package com.zjdex.framework.util;
 
 import com.auth0.jwt.JWT;
+import com.auth0.jwt.JWTCreator;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.Claim;
@@ -9,10 +10,7 @@ import com.zjdex.framework.exception.CodeException;
 import com.zjdex.framework.holder.RequestHolder;
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 import static com.zjdex.framework.holder.RequestHolder.getToken;
 
@@ -53,6 +51,39 @@ public class TokenUtil {
                 .sign(Algorithm.HMAC256(SECRET));
 
         return token;
+    }
+
+    /**
+     * 创建token
+     *
+     * @param uid Long 用户唯一标识
+     * @return
+     * @throws Exception
+     */
+    /**
+     * 创建token
+     * @param params Map
+     * @param timeout
+     * @return
+     */
+    public static String createToken(Map<String, String> params, Integer timeout) {
+        Calendar nowTime = Calendar.getInstance();
+        nowTime.add(Calendar.MINUTE, timeout);
+        Date expiresDate = nowTime.getTime();
+
+        //jwt头部信息
+        Map<String, Object> map = new HashMap<String, Object>(3);
+        map.put("alg", "HS256");
+        map.put("typ", "JWT");
+
+        JWTCreator.Builder builder = JWT.create().withHeader(map);
+        if(params != null){
+            Set<Map.Entry<String, String>> entrySet = params.entrySet();
+            for(Map.Entry<String, String> entry: entrySet){
+                builder.withClaim(entry.getKey(), entry.getValue());
+            }
+        }
+        return builder.withExpiresAt(expiresDate).sign(Algorithm.HMAC256(SECRET));
     }
 
     /**

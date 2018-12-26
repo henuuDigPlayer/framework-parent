@@ -42,8 +42,14 @@ public class HttpCacheRequestFilter implements Filter {
         response.setContentType("text/html;charset=utf-8");
 
         try {
-            MyHttpServletRequestWrapper requestWrapper = new MyHttpServletRequestWrapper(request);
-            filterChain.doFilter(requestWrapper, response);
+            String item = "multipart/form-data";
+            if(!request.getContentType().contains(item)) {
+                MyHttpServletRequestWrapper requestWrapper = new MyHttpServletRequestWrapper(request);
+                filterChain.doFilter(requestWrapper, response);
+            }
+            else{
+                filterChain.doFilter(request, response);
+            }
         }catch (Exception e){
             if(e instanceof  CodeException) {
                 CodeException codeException = (CodeException)e;
@@ -51,6 +57,7 @@ public class HttpCacheRequestFilter implements Filter {
             }
             else{
                 e.printStackTrace();
+                System.out.println(e.getMessage());
                 ResponseHolder.writeResponse(response, ResultCode.Codes.BUSINESS_ERROR);
             }
             return;
