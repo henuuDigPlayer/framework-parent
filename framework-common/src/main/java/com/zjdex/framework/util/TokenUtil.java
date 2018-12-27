@@ -8,11 +8,10 @@ import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.zjdex.framework.exception.CodeException;
 import com.zjdex.framework.holder.RequestHolder;
+import com.zjdex.framework.util.constant.ConstantUtil;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.*;
-
-import static com.zjdex.framework.holder.RequestHolder.getToken;
 
 /**
  * @author lindj

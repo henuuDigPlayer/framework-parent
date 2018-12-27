@@ -1,9 +1,8 @@
 package com.zjdex.framework.filter;
 
-import com.zjdex.framework.enums.CodeEnum;
 import com.zjdex.framework.exception.CodeException;
 import com.zjdex.framework.holder.ResponseHolder;
-import com.zjdex.framework.util.CheckSqlInjectionUtil;
+import com.zjdex.framework.util.constant.ConstantUtil;
 import com.zjdex.framework.util.ResultCode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,10 +39,10 @@ public class HttpCacheRequestFilter implements Filter {
                 "If-Modified-Since, Pragma, Last-Modified, Cache-Control, Expires, Content-Type, X-E4M-With");
         response.setCharacterEncoding("utf-8");
         response.setContentType("text/html;charset=utf-8");
+        request.setAttribute("begin", System.currentTimeMillis());
 
         try {
-            String item = "multipart/form-data";
-            if(!request.getContentType().contains(item)) {
+            if(!request.getContentType().contains(ConstantUtil.FILE_CONTENT_TYPE)) {
                 MyHttpServletRequestWrapper requestWrapper = new MyHttpServletRequestWrapper(request);
                 filterChain.doFilter(requestWrapper, response);
             }
@@ -51,24 +50,22 @@ public class HttpCacheRequestFilter implements Filter {
                 filterChain.doFilter(request, response);
             }
         }catch (Exception e){
-            if(e instanceof  CodeException) {
-                CodeException codeException = (CodeException)e;
-                ResponseHolder.writeResponse(response, codeException.getCode(), codeException.getMessage());
-            }
-            else{
                 e.printStackTrace();
                 System.out.println(e.getMessage());
                 ResponseHolder.writeResponse(response, ResultCode.Codes.BUSINESS_ERROR);
-            }
-            return;
         }
 
+        long begin = Long.parseLong(request.getAttribute("begin").toString());
+        long end = System.currentTimeMillis();
+        logger.info("completed = {}ms", (end - begin));
     }
+
 
     @Override
     public void destroy() {
 
     }
+
 
     public static class MyHttpServletRequestWrapper extends HttpServletRequestWrapper {
 
@@ -84,11 +81,6 @@ public class HttpCacheRequestFilter implements Filter {
                     baos.write(buffer, 0, len);
                 }
                 body = baos.toByteArray();
-                String sqlCheck = new String(body);
-                if(!CheckSqlInjectionUtil.validate(sqlCheck)){
-                    logger.info(sqlCheck);
-                    throw new CodeException(ResultCode.Codes.SQL_INJECTION);
-                }
             } catch (IOException ex) {
                 throw ex;
             }

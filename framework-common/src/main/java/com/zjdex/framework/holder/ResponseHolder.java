@@ -41,6 +41,17 @@ public class ResponseHolder {
         out.close();
     }
 
+    public static void writeResponse(CodeEnum codeEnum) throws IOException {
+        HttpServletResponse response = getResponse();
+        BaseResponse baseResp = ResponseUtil.error(codeEnum);
+        response.setHeader("Content-type", "text/html;charset=UTF-8");
+        response.setCharacterEncoding("UTF-8");
+        PrintWriter out = response.getWriter();
+        out.print(JsonUtil.objectToJson(baseResp));
+        out.flush();
+        out.close();
+    }
+
     public static void writeResponse(HttpServletResponse response, Integer code, String message) throws IOException {
         BaseResponse baseResp = ResponseUtil.error(code, message);
         response.setHeader("Content-type", "text/html;charset=UTF-8");

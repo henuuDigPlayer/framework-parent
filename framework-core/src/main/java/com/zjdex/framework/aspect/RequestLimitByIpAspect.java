@@ -1,6 +1,6 @@
 package com.zjdex.framework.aspect;
 
-import com.zjdex.framework.annotation.MethodReqLimitAnnotation;
+import com.zjdex.framework.annotation.RequestLimitByIpAnnotation;
 import com.zjdex.framework.exception.CodeException;
 import com.zjdex.framework.holder.RequestHolder;
 import com.zjdex.framework.service.RedisService;
@@ -22,12 +22,12 @@ import java.io.IOException;
  */
 @Aspect
 @Component
-public class MethodReqLimitAspect {
+public class RequestLimitByIpAspect {
 
     @Autowired
     private RedisService redisService;
 
-    @Pointcut("@annotation(com.zjdex.framework.annotation.MethodReqLimitAnnotation)")
+    @Pointcut("@annotation(com.zjdex.framework.annotation.RequestLimitByIpAnnotation)")
     public void execute() {
 
     }
@@ -36,14 +36,14 @@ public class MethodReqLimitAspect {
      * 前置处理
      *
      * @param joinPoint              JoinPoint
-     * @param methodReqLimitAnnotation MethodReqLimitAnnotation
+     * @param requestLimitByIpAnnotation RequestLimitByIpAnnotation
      */
-    @Before("execute() && @annotation(methodReqLimitAnnotation)")
-    public void doBefore(JoinPoint joinPoint, MethodReqLimitAnnotation methodReqLimitAnnotation) throws IOException {
-        if (methodReqLimitAnnotation != null) {
-            String key = methodReqLimitAnnotation.key();
-            Long timeout = methodReqLimitAnnotation.timeout();
-            Long limit = methodReqLimitAnnotation.limit();
+    @Before("execute() && @annotation(requestLimitByIpAnnotation)")
+    public void doBefore(JoinPoint joinPoint, RequestLimitByIpAnnotation requestLimitByIpAnnotation) throws IOException {
+        if (requestLimitByIpAnnotation != null) {
+            String key = requestLimitByIpAnnotation.key();
+            Long timeout = requestLimitByIpAnnotation.timeout();
+            Long limit = requestLimitByIpAnnotation.limit();
             String ip = HttpRequestUtil.getIpAddr(RequestHolder.getRequest());
             StringBuilder builder = new StringBuilder();
             builder.append(ip).append(":").append(key);

@@ -14,12 +14,13 @@ import org.springframework.context.annotation.Configuration;
 public class FilterConfig {
 
     @Bean
-    public FilterRegistrationBean setFilter(){
-
+    public FilterRegistrationBean setCacheFilter(){
         FilterRegistrationBean filterBean = new FilterRegistrationBean();
         filterBean.setFilter(new HttpCacheRequestFilter());
         filterBean.setName("HttpCacheRequestFilter");
         filterBean.addUrlPatterns("/*");
+        filterBean.setOrder(1);
         return filterBean;
     }
+
 }

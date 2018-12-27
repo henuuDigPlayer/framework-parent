@@ -16,6 +16,7 @@ public class CheckSqlInjectionUtil {
 
     /**
      * 检查SQL注入
+     *
      * @param str
      */
     public static boolean validate(String str) {
@@ -24,8 +25,10 @@ public class CheckSqlInjectionUtil {
         }
         return true;
     }
+
     /**
      * 检查SQL注入
+     *
      * @param strs
      */
     public static boolean validate(String[] strs) {
