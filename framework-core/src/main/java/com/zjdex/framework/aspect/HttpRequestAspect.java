@@ -30,7 +30,7 @@ import javax.servlet.http.HttpServletRequest;
 public class HttpRequestAspect {
     private static final Logger logger = LoggerFactory.getLogger(HttpRequestAspect.class);
 
-    @Pointcut("execution(* com.zjdex.*.*(..))")
+    @Pointcut("execution(* com.zjdex..*.*(..))")
     public void execute() {
     }
 

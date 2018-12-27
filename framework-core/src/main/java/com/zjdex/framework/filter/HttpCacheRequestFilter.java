@@ -41,9 +41,8 @@ public class HttpCacheRequestFilter implements Filter {
         response.setContentType("text/html;charset=utf-8");
         request.setAttribute("begin", System.currentTimeMillis());
 
-        logger.info("124312432"+request.getMethod());
         try {
-            if(!request.getContentType().contains(ConstantUtil.FILE_CONTENT_TYPE) && !request.getMethod().equals("GET")) {
+            if(!ConstantUtil.FILE_CONTENT_TYPE.equals(request.getContentType())) {
                 MyHttpServletRequestWrapper requestWrapper = new MyHttpServletRequestWrapper(request);
                 filterChain.doFilter(requestWrapper, response);
             }
