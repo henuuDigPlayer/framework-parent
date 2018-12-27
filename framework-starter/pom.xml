@@ -6,7 +6,7 @@
     <parent>
         <artifactId>parent</artifactId>
         <groupId>com.zjdex.framework</groupId>
-        <version>1.0</version>
+        <version>1.2</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -16,9 +16,9 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <framework-core>1.0</framework-core>
-        <framework-cache>1.0</framework-cache>
-        <framework-mq>1.0</framework-mq>
+        <framework-core>1.2</framework-core>
+        <framework-cache>1.2</framework-cache>
+        <framework-mq>1.2</framework-mq>
         <spring-cloud.version>Finchley.RELEASE</spring-cloud.version>
         <cloud-starter-feign>1.4.4.RELEASE</cloud-starter-feign>
     </properties>
