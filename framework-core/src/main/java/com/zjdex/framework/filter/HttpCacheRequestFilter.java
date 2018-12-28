@@ -43,7 +43,7 @@ public class HttpCacheRequestFilter implements Filter {
 
         try {
             String item = "multipart/form-data";
-            if(!request.getContentType().contains(item)) {
+            if(!item.equals(request.getContentType())) {
                 MyHttpServletRequestWrapper requestWrapper = new MyHttpServletRequestWrapper(request);
                 filterChain.doFilter(requestWrapper, response);
             }
