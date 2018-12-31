@@ -38,4 +38,9 @@ public interface ConstantUtil {
      */
     String FILE_CONTENT_TYPE = "multipart/form-data";
 
+
+    String METHOD_GET = "GET";
+
+    String METHOD_POST = "POST";
+
 }

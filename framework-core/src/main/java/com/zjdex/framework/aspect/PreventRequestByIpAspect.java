@@ -1,6 +1,6 @@
 package com.zjdex.framework.aspect;
 
-import com.zjdex.framework.annotation.RequestLimitByIpAnnotation;
+import com.zjdex.framework.annotation.PreventReqByIpAnnotation;
 import com.zjdex.framework.exception.CodeException;
 import com.zjdex.framework.holder.RequestHolder;
 import com.zjdex.framework.service.RedisService;
@@ -22,12 +22,12 @@ import java.io.IOException;
  */
 @Aspect
 @Component
-public class RequestLimitByIpAspect {
+public class PreventRequestByIpAspect {
 
     @Autowired
     private RedisService redisService;
 
-    @Pointcut("@annotation(com.zjdex.framework.annotation.RequestLimitByIpAnnotation)")
+    @Pointcut("@annotation(com.zjdex.framework.annotation.PreventReqByIpAnnotation)")
     public void execute() {
 
     }
@@ -36,14 +36,14 @@ public class RequestLimitByIpAspect {
      * 前置处理
      *
      * @param joinPoint              JoinPoint
-     * @param requestLimitByIpAnnotation RequestLimitByIpAnnotation
+     * @param preventReqByIpAnnotation PreventReqByIpAnnotation
      */
-    @Before("execute() && @annotation(requestLimitByIpAnnotation)")
-    public void doBefore(JoinPoint joinPoint, RequestLimitByIpAnnotation requestLimitByIpAnnotation) throws IOException {
-        if (requestLimitByIpAnnotation != null) {
-            String key = requestLimitByIpAnnotation.key();
-            Long timeout = requestLimitByIpAnnotation.timeout();
-            Long limit = requestLimitByIpAnnotation.limit();
+    @Before("execute() && @annotation(preventReqByIpAnnotation)")
+    public void doBefore(JoinPoint joinPoint, PreventReqByIpAnnotation preventReqByIpAnnotation) throws IOException {
+        if (preventReqByIpAnnotation != null) {
+            String key = preventReqByIpAnnotation.key();
+            Long timeout = preventReqByIpAnnotation.timeout();
+            Long limit = preventReqByIpAnnotation.limit();
             String ip = HttpRequestUtil.getIpAddr(RequestHolder.getRequest());
             StringBuilder builder = new StringBuilder();
             builder.append(ip).append(":").append(key);

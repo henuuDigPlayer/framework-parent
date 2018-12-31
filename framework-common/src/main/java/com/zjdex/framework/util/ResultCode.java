@@ -20,6 +20,10 @@ public class ResultCode {
          */
         NOT_FIND(404, "接口不存在"),
         /**
+         * 不支持该请求
+         */
+        NOT_ALLOWED(405, "不支持该请求"),
+        /**
          * 正常请求提示
          */
         SUCCESS(10000, "成功"),

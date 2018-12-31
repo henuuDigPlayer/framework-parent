@@ -6,10 +6,15 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.zjdex.framework.bean.BaseResponse;
 import com.zjdex.framework.exception.CodeException;
 import com.zjdex.framework.holder.RequestHolder;
 import com.zjdex.framework.util.constant.ConstantUtil;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.expression.EvaluationContext;
+import org.springframework.expression.ExpressionParser;
+import org.springframework.expression.spel.standard.SpelExpressionParser;
+import org.springframework.expression.spel.support.StandardEvaluationContext;
 
 import java.util.*;
 
@@ -152,9 +157,19 @@ public class TokenUtil {
 
     public static void main(String[] args){
 
-        String token = TokenUtil.createToken(132L);
-        TokenUtil.parseToken("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJ3ZWIiLCJ1aWQiOiIxMjQiLCJpc3MiOiJzZXJ2aWNlIiwiZXhwIjoxNTM5NzU5MzgzLCJpYXQiOjE1Mzk3NTc1ODN9.aYNp6rDs0WTkiw3-NJt7JQ00lHgCLx59e7Gzh9GaLEQ");
-        System.out.println(TokenUtil.getUid("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJ3ZWIiLCJ1aWQiOiIxMjQiLCJpc3MiOiJzZXJ2aWNlIiwiZXhwIjoxNTM5NzU5MzgzLCJpYXQiOjE1Mzk3NTc1ODN9.aYNp6rDs0WTkiw3-NJt7JQ00lHgCLx59e7Gzh9GaLEQ"));
+//        String token = TokenUtil.createToken(132L);
+//        TokenUtil.parseToken("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJ3ZWIiLCJ1aWQiOiIxMjQiLCJpc3MiOiJzZXJ2aWNlIiwiZXhwIjoxNTM5NzU5MzgzLCJpYXQiOjE1Mzk3NTc1ODN9.aYNp6rDs0WTkiw3-NJt7JQ00lHgCLx59e7Gzh9GaLEQ");
+//        System.out.println(TokenUtil.getUid("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJ3ZWIiLCJ1aWQiOiIxMjQiLCJpc3MiOiJzZXJ2aWNlIiwiZXhwIjoxNTM5NzU5MzgzLCJpYXQiOjE1Mzk3NTc1ODN9.aYNp6rDs0WTkiw3-NJt7JQ00lHgCLx59e7Gzh9GaLEQ"));
+        BaseResponse baseResponse = new BaseResponse();
+        baseResponse.setCode(1);
+        baseResponse.setData("value");
+        ExpressionParser expressionParser = new SpelExpressionParser();
+        EvaluationContext context = new StandardEvaluationContext();
+        context.setVariable("baseResponse", baseResponse);
+        String value = expressionParser.parseExpression("#baseResponse.data").getValue(context
+                , String.class);
+
+        System.out.println(value);
     }
 
 }

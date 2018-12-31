@@ -42,17 +42,15 @@ public class HttpCacheRequestFilter implements Filter {
         request.setAttribute("begin", System.currentTimeMillis());
 
         try {
-            if(!ConstantUtil.FILE_CONTENT_TYPE.equals(request.getContentType())) {
+            if (!ConstantUtil.FILE_CONTENT_TYPE.equals(request.getContentType())) {
                 MyHttpServletRequestWrapper requestWrapper = new MyHttpServletRequestWrapper(request);
                 filterChain.doFilter(requestWrapper, response);
-            }
-            else{
+            } else {
                 filterChain.doFilter(request, response);
             }
-        }catch (Exception e){
-                e.printStackTrace();
-                System.out.println(e.getMessage());
-                ResponseHolder.writeResponse(response, ResultCode.Codes.BUSINESS_ERROR);
+        } catch (Exception e) {
+            e.printStackTrace();
+            ResponseHolder.writeResponse(response, ResultCode.Codes.BUSINESS_ERROR);
         }
 
         long begin = Long.parseLong(request.getAttribute("begin").toString());
@@ -70,12 +68,13 @@ public class HttpCacheRequestFilter implements Filter {
     public static class MyHttpServletRequestWrapper extends HttpServletRequestWrapper {
 
         private final byte[] body;
+
         public MyHttpServletRequestWrapper(HttpServletRequest request)
                 throws Exception {
             super(request);
             try (BufferedInputStream bis = new BufferedInputStream(request.getInputStream());
                  ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
-                byte[] buffer = new byte[1024];
+                byte[] buffer = new byte[1024 * 5];
                 int len;
                 while ((len = bis.read(buffer)) > 0) {
                     baos.write(buffer, 0, len);
@@ -99,6 +98,7 @@ public class HttpCacheRequestFilter implements Filter {
                 public boolean isFinished() {
                     return false;
                 }
+
                 @Override
                 public boolean isReady() {
                     return false;
@@ -108,6 +108,7 @@ public class HttpCacheRequestFilter implements Filter {
                 public void setReadListener(ReadListener readListener) {
 
                 }
+
                 @Override
                 public int read() throws IOException {
                     return bais.read();

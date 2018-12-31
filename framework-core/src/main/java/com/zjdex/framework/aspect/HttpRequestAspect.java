@@ -3,10 +3,9 @@ package com.zjdex.framework.aspect;
 import com.alibaba.fastjson.JSON;
 import com.zjdex.framework.bean.BaseResponse;
 import com.zjdex.framework.exception.CodeException;
-import com.zjdex.framework.util.JsonUtil;
-import com.zjdex.framework.util.ResponseUtil;
-import com.zjdex.framework.util.ResultCode;
-import com.zjdex.framework.util.StringUtil;
+import com.zjdex.framework.holder.ResponseHolder;
+import com.zjdex.framework.util.*;
+import com.zjdex.framework.util.constant.ConstantUtil;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
@@ -32,7 +31,7 @@ import javax.servlet.http.HttpServletRequest;
 public class HttpRequestAspect {
     private static final Logger logger = LoggerFactory.getLogger(HttpRequestAspect.class);
 
-    @Pointcut("execution (* com.zjdex..*.*(..))")
+    @Pointcut("@within(org.springframework.web.bind.annotation.RestController) || @within(org.springframework.stereotype.Controller)")
     public void execute() {
     }
 
@@ -60,9 +59,15 @@ public class HttpRequestAspect {
         // 请求参数
         try {
             if(!StringUtil.isEmpty(joinPoint.getArgs())){
-                String item = "multipart/form-data";
-                if(!request.getContentType().contains(item)) {
-                    logger.info("args = {}", JSON.toJSONString(joinPoint.getArgs()[0]));
+                if(!ConstantUtil.FILE_CONTENT_TYPE.equals(request.getContentType())) {
+                    if(!method.equals(ConstantUtil.METHOD_GET)) {
+                        String requestParams = JsonUtil.objectToJson(joinPoint.getArgs()[0]);
+                        logger.info("args = {}", (requestParams));
+                        if (!CheckSqlInjectionUtil.validate(requestParams)) {
+                            ResponseHolder.writeResponse(ResultCode.Codes.SQL_INJECTION);
+                            return;
+                        }
+                    }
                 }
             }
         }catch (Exception e){
@@ -92,20 +97,6 @@ public class HttpRequestAspect {
     }
 
     /**
-     * 后置，输出结果信息
-     * @param object 环绕处理结果
-     */
-    @AfterReturning(pointcut = "execute()", returning = "object")
-    public void doAfterReturing(Object object) {
-        logger.info("response = {}", JsonUtil.objectToJson(object));
-        HttpServletRequest request = this.getRequest();
-        long begin = Long.parseLong(request.getAttribute("begin").toString());
-        long end = System.currentTimeMillis();
-        logger.info("completed = {}ms", (end - begin));
-
-    }
-
-    /**
      * 异常处理
      *
      * @param e Exception对象
@@ -116,10 +107,5 @@ public class HttpRequestAspect {
             return ResponseUtil.error((CodeException) e);
         }
         return ResponseUtil.error(ResultCode.Codes.BUSINESS_ERROR.getCode(), e.getMessage());
-    }
-
-    private HttpServletRequest getRequest() {
-        ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-        return attributes.getRequest();
     }
 }

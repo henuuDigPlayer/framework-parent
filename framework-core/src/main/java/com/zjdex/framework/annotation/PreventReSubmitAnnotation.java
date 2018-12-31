@@ -14,10 +14,32 @@ import java.lang.annotation.Target;
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface RepeatSubmitAnnotation {
+public @interface PreventReSubmitAnnotation {
 
-    boolean create() default false;
-    boolean remove() default false;
+    /**
+     * 过期时间 单位秒
+     * @return
+     */
+
+    long timeout() default 0L;
+
+    /**
+     * 关键字
+     * @return
+     */
+    String key() default "";
+
+    /**
+     * 描述
+     * @return
+     */
+    String describe() default "";
+
+    /**
+     * 限制次数
+     * @return
+     */
+    long limit() default 1L;
 
 
 }

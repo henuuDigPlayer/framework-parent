@@ -10,9 +10,29 @@ import java.lang.annotation.*;
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface RequestLimitByIpAnnotation {
+public @interface PreventReqByIpAnnotation {
 
+    /**
+     * key
+     * @return
+     */
     String key() default "";
+
+    /**
+     * 过期时间 秒
+     * @return
+     */
     long timeout() default 0L;
+
+    /**
+     * 限制次数
+     * @return
+     */
     long limit() default 0L;
+
+    /**
+     * 描述
+     * @return
+     */
+    String describe() default "";
 }
