@@ -67,14 +67,6 @@ public class RedisConfig  extends CachingConfigurerSupport {
         return new FastJsonRedisSerializer<Object>(Object.class);
     }
 
-    @Bean(name = "lockRedisScript")
-    public DefaultRedisScript<Long> redisLockScript(){
-        DefaultRedisScript<Long> redisScript = new DefaultRedisScript<Long>();
-        redisScript.setScriptSource(new ResourceScriptSource(new ClassPathResource("lock.lua")));
-        redisScript.setResultType(Long.class);
-        return redisScript;
-    }
-
     @Bean
     public RedisTemplate<Object, Object> redisTemplate(RedisConnectionFactory redisConnectionFactory) {
         RedisTemplate<Object, Object> template = new RedisTemplate<>();

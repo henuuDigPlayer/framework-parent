@@ -3,18 +3,12 @@ package com.zjdex.framework.service.impl;
 import com.zjdex.framework.constant.RedisConstant;
 import com.zjdex.framework.service.RedisService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisCallback;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.StringRedisTemplate;
-import org.springframework.data.redis.core.script.DefaultRedisScript;
+import org.springframework.dao.DataAccessException;
+import org.springframework.data.redis.core.*;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
-import org.springframework.util.ReflectionUtils;
 import redis.clients.jedis.Jedis;
-import redis.clients.jedis.JedisCommands;
 
-import javax.annotation.Resource;
-import java.util.Collections;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -28,10 +22,6 @@ public class RedisServiceImpl implements RedisService {
 
     @Autowired
     private RedisTemplate redisTemplate;
-    @Autowired
-    private StringRedisTemplate stringRedisTemplate;
-    @Resource(name = "lockRedisScript")
-    private DefaultRedisScript<Long> lockRedisScript;
 
     /**
      * 写入缓存
@@ -65,7 +55,7 @@ public class RedisServiceImpl implements RedisService {
      */
     @Override
     public boolean setNX(String key, String value, Long expireTime) {
-        return (Boolean) stringRedisTemplate.execute((RedisCallback<Boolean>) redisConnection -> {
+        return (Boolean) redisTemplate.execute((RedisCallback<Boolean>) redisConnection -> {
             Jedis commands = (Jedis) redisConnection.getNativeConnection();
             String result = commands.set(key, value, RedisConstant.SET_IF_NOT_EXIST,
                     RedisConstant.SET_WITH_EXPIRE_TIME, expireTime);
@@ -190,4 +180,7 @@ public class RedisServiceImpl implements RedisService {
         this.redisTemplate.delete(this.redisTemplate.keys(keyPattern));
     }
 
+    public boolean unlock(String key, String value, Long expireTime) {
+        return true;
+    }
 }
