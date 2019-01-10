@@ -85,10 +85,10 @@ public class HttpCacheRequestFilter implements Filter {
                 }
                 body = baos.toByteArray();
                 String sqlCheck = new String(body);
-                /*if(!CheckSqlInjectionUtil.validate(sqlCheck)){
+                if(!CheckSqlInjectionUtil.validate(sqlCheck)){
                     logger.info(sqlCheck);
                     throw new CodeException(ResultCode.Codes.SQL_INJECTION);
-                }*/
+                }
             } catch (IOException ex) {
                 throw ex;
             }
