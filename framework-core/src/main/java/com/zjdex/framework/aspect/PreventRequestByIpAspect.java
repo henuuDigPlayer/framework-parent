@@ -4,7 +4,7 @@ import com.zjdex.framework.annotation.PreventReqByIpAnnotation;
 import com.zjdex.framework.exception.CodeException;
 import com.zjdex.framework.holder.RequestHolder;
 import com.zjdex.framework.service.RedisService;
-import com.zjdex.framework.util.HttpRequestUtil;
+import com.zjdex.framework.util.http.HttpRequestUtil;
 import com.zjdex.framework.util.ResultCode;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;

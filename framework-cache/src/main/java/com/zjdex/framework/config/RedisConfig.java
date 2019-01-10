@@ -2,6 +2,7 @@ package com.zjdex.framework.config;
 
 import com.alibaba.fastjson.parser.ParserConfig;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CachingConfigurerSupport;
 import org.springframework.cache.annotation.EnableCaching;
@@ -21,6 +22,7 @@ import org.springframework.scripting.support.ResourceScriptSource;
 
 import java.lang.reflect.Method;
 import java.time.Duration;
+import java.util.Arrays;
 
 /**
  * @author: lindj
@@ -29,10 +31,8 @@ import java.time.Duration;
  */
 @Configuration
 @EnableCaching
+@ConditionalOnProperty(name = "spring.redis.enable", havingValue = "true")
 public class RedisConfig  extends CachingConfigurerSupport {
-
-    @Autowired
-    private RedisParams redisParams;
 
     @Bean
     public KeyGenerator keyGenerators() {
@@ -50,7 +50,7 @@ public class RedisConfig  extends CachingConfigurerSupport {
         };
     }
 
-    @Bean
+  /*  @Bean
     CacheManager cacheManager(RedisConnectionFactory connectionFactory) {
         //初始化一个RedisCacheWriter
         RedisCacheWriter redisCacheWriter = RedisCacheWriter.nonLockingRedisCacheWriter(connectionFactory);
@@ -60,6 +60,16 @@ public class RedisConfig  extends CachingConfigurerSupport {
         //初始化RedisCacheManager
         RedisCacheManager cacheManager = new RedisCacheManager(redisCacheWriter, defaultCacheConfig);
         return cacheManager;
+    }*/
+
+    @Bean
+    public CacheManager cacheManager(RedisConnectionFactory redisConnectionFactory) {
+        // 设置缓存有效期一小时
+        RedisCacheConfiguration redisCacheConfiguration = RedisCacheConfiguration.defaultCacheConfig()
+                .entryTtl(Duration.ofHours(1));
+        return RedisCacheManager
+                .builder(RedisCacheWriter.nonLockingRedisCacheWriter(redisConnectionFactory))
+                .cacheDefaults(redisCacheConfiguration).build();
     }
 
     @Bean

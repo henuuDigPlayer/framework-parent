@@ -109,4 +109,13 @@ public interface RedisService {
      * @param keyPattern String
      */
     void delBatch(String keyPattern);
+
+    /**
+     * 释放锁
+     *
+     * @param key        String
+     * @param value      String
+     * @return boolean
+     */
+    boolean unlock(String key, String value);
 }

@@ -2,10 +2,8 @@ package com.zjdex.framework.holder;
 
 import com.zjdex.framework.bean.BaseResponse;
 import com.zjdex.framework.enums.CodeEnum;
-import com.zjdex.framework.util.JsonUtil;
-import com.zjdex.framework.util.PropertyUtil;
+import com.zjdex.framework.util.data.JsonUtil;
 import com.zjdex.framework.util.ResponseUtil;
-import com.zjdex.framework.util.ResultCode;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 

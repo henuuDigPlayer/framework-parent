@@ -17,47 +17,22 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @ConditionalOnProperty(name = "spring.redission.enable", havingValue = "true")
 @ConfigurationProperties(prefix="spring.redission")
-public class RedissionConfig {
-    /**
-     * 连接空闲超时
-     */
+public class RedissonConfig {
     private Integer idleConnectionTimeout;
-    /**
-     * 连接超时 毫秒
-     */
     private Integer connectTimeout;
-    /**
-     * 命令等待超时 毫秒
-     */
     private Integer timeout;
-    /**
-     * 命令失败重试次数
-     */
     private Integer retryAttempts;
-    /**
-     * 命令重试发送时间间隔
-     */
     private Integer retryInterval;
     private String password;
-    /**
-     * 单个连接最大订阅数量
-     */
     private Integer subscriptionsPerConnection;
     private String clientName;
     private String address;
     private Integer subscriptionConnectionMinimumIdleSize;
     private Integer subscriptionConnectionPoolSize;
-    /**
-     * 最小空闲连接数
-     */
     private Integer connectionMinimumIdleSize;
     private Integer connectionPoolSize;
     private Integer database;
 
-    /**
-     * redission配置
-     * @return
-     */
     @Bean(destroyMethod = "shutdown")
     public RedissonClient getRedissionClient() {
         Config config = new Config();

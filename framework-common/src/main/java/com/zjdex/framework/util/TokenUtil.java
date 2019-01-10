@@ -10,6 +10,7 @@ import com.zjdex.framework.bean.BaseResponse;
 import com.zjdex.framework.exception.CodeException;
 import com.zjdex.framework.holder.RequestHolder;
 import com.zjdex.framework.util.constant.ConstantUtil;
+import com.zjdex.framework.util.data.StringUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.expression.EvaluationContext;
 import org.springframework.expression.ExpressionParser;

@@ -3,6 +3,7 @@ package com.zjdex.framework.config;
 import com.alibaba.druid.pool.DruidDataSource;
 import com.alibaba.druid.support.http.StatViewServlet;
 import com.alibaba.druid.support.http.WebStatFilter;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
@@ -15,6 +16,7 @@ import org.springframework.context.annotation.Configuration;
  * @description: 数据库配置
  */
 @Configuration
+@ConditionalOnProperty(name = "spring.datasource.enable", havingValue = "true")
 public class DataSourceConfig {
 
     @Bean(name = "dataSource_druid",initMethod = "init", destroyMethod = "close")

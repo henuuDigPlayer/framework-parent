@@ -2,6 +2,7 @@ package com.zjdex.framework.service.impl;
 
 import com.zjdex.framework.constant.RedisConstant;
 import com.zjdex.framework.service.RedisService;
+import com.zjdex.framework.util.ScriptUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.redis.core.*;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import redis.clients.jedis.Jedis;
 
+import java.util.Collections;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -180,7 +182,24 @@ public class RedisServiceImpl implements RedisService {
         this.redisTemplate.delete(this.redisTemplate.keys(keyPattern));
     }
 
-    public boolean unlock(String key, String value, Long expireTime) {
-        return true;
+    /**
+     * 释放锁
+     *
+     * @param key        String
+     * @param value      String
+     * @return boolean
+     */
+    @Override
+    public boolean unlock(String key, String value) {
+        return (Boolean) redisTemplate.execute((RedisCallback<Boolean>) redisConnection -> {
+            Jedis commands = (Jedis) redisConnection.getNativeConnection();
+            String script = ScriptUtil.getScript("releaseLock.lua");
+            Object result = commands.eval(script, Collections.singletonList(key),
+                    Collections.singletonList(value));
+            if (RedisConstant.UNLOCK_MSG.equals(result)) {
+                return true;
+            }
+            return false;
+        });
     }
 }

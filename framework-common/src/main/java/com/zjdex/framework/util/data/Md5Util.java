@@ -1,4 +1,6 @@
-package com.zjdex.framework.util;
+package com.zjdex.framework.util.data;
+
+import com.zjdex.framework.util.data.StringUtil;
 
 import java.io.File;
 import java.io.FileInputStream;

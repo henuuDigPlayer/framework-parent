@@ -1,6 +1,6 @@
 package com.zjdex.framework.bean;
 
-import com.zjdex.framework.util.JsonUtil;
+import com.zjdex.framework.util.data.JsonUtil;
 
 import java.io.Serializable;
 
