@@ -15,8 +15,8 @@ import org.springframework.context.annotation.Configuration;
  */
 
 @Configuration
-@ConditionalOnProperty(name = "spring.redission.enable", havingValue = "true")
-@ConfigurationProperties(prefix="spring.redission")
+@ConditionalOnProperty(name = "spring.redisson.enable", havingValue = "true")
+@ConfigurationProperties(prefix="spring.redisson")
 public class RedissonConfig {
     private Integer idleConnectionTimeout;
     private Integer connectTimeout;

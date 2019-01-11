@@ -16,7 +16,6 @@ import org.springframework.context.annotation.Configuration;
  * @description: 数据库配置
  */
 @Configuration
-@ConditionalOnProperty(name = "spring.datasource.enable", havingValue = "true")
 public class DataSourceConfig {
 
     @Bean(name = "dataSource_druid",initMethod = "init", destroyMethod = "close")
