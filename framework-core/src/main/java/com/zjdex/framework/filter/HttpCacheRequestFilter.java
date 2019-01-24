@@ -7,6 +7,7 @@ import com.zjdex.framework.util.CheckSqlInjectionUtil;
 import com.zjdex.framework.util.ResultCode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
@@ -34,7 +35,7 @@ public class HttpCacheRequestFilter implements Filter {
         HttpServletResponse response = (HttpServletResponse) servletResponse;
 
         //解决跨域问题
-        response.addHeader("Access-Control-Allow-Origin", "*");
+        response.addHeader("Access-Control-Allow-Origin", "192.168.0.69");
         response.addHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
         response.addHeader("Access-Control-Allow-Headers", "Origin, No-Cache, X-Requested-With, " +
                 "If-Modified-Since, Pragma, Last-Modified, Cache-Control, Expires, Content-Type, X-E4M-With");
@@ -58,7 +59,8 @@ public class HttpCacheRequestFilter implements Filter {
             else{
                 e.printStackTrace();
                 System.out.println(e.getMessage());
-                ResponseHolder.writeResponse(response, ResultCode.Codes.BUSINESS_ERROR);
+                ResponseHolder.writeResponse(response, ResultCode.Codes.BUSINESS_ERROR,
+                        HttpStatus.INTERNAL_SERVER_ERROR.value());
             }
             return;
         }
