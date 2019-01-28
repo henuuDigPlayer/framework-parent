@@ -41,7 +41,30 @@ public class HttpRequestUtil {
         logger.info("bodyParams={}", JsonUtil.objectToJson(params));
         String result = "";
         try {
-            HttpURLConnection connection = getConnection(url, JSON, headers);
+            HttpURLConnection connection = getConnection(url, JSON, headers, (int)ConstantUtil.CONNECTION_TIMEOUT);
+            result = writeResponse(connection, params);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        logger.info("result={}", result);
+        return result;
+    }
+
+    /**
+     * 发送HttpPost请求 json
+     *
+     * @param url    服务地址
+     * @param params String 请求参数
+     * @return json字符串
+     */
+    public static String doPost(String url, String params,
+                                Map<String, String> headers, Integer timeout) {
+        logger.info("url={}", url);
+        logger.info("headerParams={}", JsonUtil.objectToJson(headers));
+        logger.info("bodyParams={}", JsonUtil.objectToJson(params));
+        String result = "";
+        try {
+            HttpURLConnection connection = getConnection(url, JSON, headers, timeout);
             result = writeResponse(connection, params);
         } catch (Exception e) {
             e.printStackTrace();
@@ -60,7 +83,8 @@ public class HttpRequestUtil {
     public static String doPost(String url, String params) {
         String result = "";
         try {
-            HttpURLConnection connection = getConnection(url, FORM_URLENCODED, null);
+            HttpURLConnection connection = getConnection(url, FORM_URLENCODED, null,
+                    (int)ConstantUtil.CONNECTION_TIMEOUT);
             result = writeResponse(connection, params);
         } catch (Exception e) {
             e.printStackTrace();
@@ -77,7 +101,7 @@ public class HttpRequestUtil {
      * @throws IOException
      */
     public static HttpURLConnection getConnection(String url, String contentType, Map<String,
-            String> headers) throws IOException {
+            String> headers, Integer timeout) throws IOException {
         URL conUrl = new URL(url);
         HttpURLConnection connection = (HttpURLConnection) conUrl.openConnection();
         connection.setDoOutput(true);
@@ -87,7 +111,7 @@ public class HttpRequestUtil {
         connection.setRequestMethod("POST");
         connection.setRequestProperty("Accept", contentType);
         connection.setRequestProperty("Content-Type", contentType);
-        connection.setConnectTimeout((int) ConstantUtil.CONNECTION_TIMEOUT);
+        connection.setConnectTimeout(timeout);
         if (headers != null) {
             Set<Map.Entry<String, String>> sets = headers.entrySet();
             if (!StringUtil.isEmpty(sets)) {
@@ -116,8 +140,9 @@ public class HttpRequestUtil {
             while ((line = in.readLine()) != null) {
                 result.append(line);
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
+            logger.info(e.getMessage());
             return null;
         } finally {
             try {
