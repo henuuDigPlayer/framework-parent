@@ -21,7 +21,6 @@
         <mysql-connector>5.1.39</mysql-connector>
         <druid>1.1.9</druid>
         <framework-common>1.0</framework-common>
-        <framework-cache>1.0</framework-cache>
     </properties>
 
     <dependencies>
@@ -51,11 +50,6 @@
             <groupId>com.zjdex.framework</groupId>
             <artifactId>framework-common</artifactId>
             <version>${framework-common}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.zjdex.framework</groupId>
-            <artifactId>framework-cache</artifactId>
-            <version>${framework-cache}</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
         <dependency>
