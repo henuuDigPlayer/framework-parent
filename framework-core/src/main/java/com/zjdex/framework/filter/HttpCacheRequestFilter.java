@@ -42,7 +42,7 @@ public class HttpCacheRequestFilter implements Filter {
         request.setAttribute("begin", System.currentTimeMillis());
 
         try {
-            if (!ConstantUtil.FILE_CONTENT_TYPE.equals(request.getContentType())) {
+            if (!request.getContentType().contains(ConstantUtil.FILE_CONTENT_TYPE)) {
                 MyHttpServletRequestWrapper requestWrapper = new MyHttpServletRequestWrapper(request);
                 filterChain.doFilter(requestWrapper, response);
             } else {
