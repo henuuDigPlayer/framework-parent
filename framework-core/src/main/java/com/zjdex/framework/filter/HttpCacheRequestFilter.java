@@ -42,10 +42,15 @@ public class HttpCacheRequestFilter implements Filter {
         request.setAttribute("begin", System.currentTimeMillis());
 
         try {
-            if (!request.getContentType().contains(ConstantUtil.FILE_CONTENT_TYPE)) {
-                MyHttpServletRequestWrapper requestWrapper = new MyHttpServletRequestWrapper(request);
-                filterChain.doFilter(requestWrapper, response);
-            } else {
+            if(ConstantUtil.METHOD_POST.equals(request.getMethod())) {
+                if (!request.getContentType().contains(ConstantUtil.FILE_CONTENT_TYPE)) {
+                    MyHttpServletRequestWrapper requestWrapper = new MyHttpServletRequestWrapper(request);
+                    filterChain.doFilter(requestWrapper, response);
+                }
+                else{
+                    filterChain.doFilter(request, response);
+                }
+            }else {
                 filterChain.doFilter(request, response);
             }
         } catch (Exception e) {

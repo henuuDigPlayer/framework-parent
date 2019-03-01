@@ -18,7 +18,6 @@
   </modules>
 
   <name>framework-parent</name>
-
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
@@ -30,8 +29,32 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <java.version>1.8</java.version>
+
+    <framework-common>1.2</framework-common>
+    <framework-core>1.2</framework-core>
+    <framework-cache>1.2</framework-cache>
+    <framework-mq>1.2</framework-mq>
+
     <fastjson>1.2.47</fastjson>
-    <starter-data-redis>2.0.2.RELEASE</starter-data-redis>
+    <jedis>2.9.0</jedis>
+    <redisson>3.10.0</redisson>
+    <commons-lang>3.7</commons-lang>
+    <slf4j>1.7.25</slf4j>
+    <gson>2.8.5</gson>
+    <jwt>3.4.0</jwt>
+
+    <guava>27.0-jre</guava>
+    <jdom2>2.0.6</jdom2>
+    <commons-io>2.6</commons-io>
+
+    <mybatis-spring-boot>1.3.0</mybatis-spring-boot>
+    <mysql-connector>5.1.39</mysql-connector>
+    <druid>1.1.9</druid>
+
+    <spring-boot-starter-data-redis>2.0.2.RELEASE</spring-boot-starter-data-redis>
+    <spring-boot-starter-freemarker>2.0.5.RELEASE</spring-boot-starter-freemarker>
+    <spring-cloud.version>Finchley.RELEASE</spring-cloud.version>
+    <cloud-starter-feign>1.4.4.RELEASE</cloud-starter-feign>
   </properties>
 
   <dependencies>

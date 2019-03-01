@@ -16,11 +16,6 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <framework-core>1.2</framework-core>
-        <framework-cache>1.2</framework-cache>
-        <framework-mq>1.2</framework-mq>
-        <spring-cloud.version>Finchley.RELEASE</spring-cloud.version>
-        <cloud-starter-feign>1.4.4.RELEASE</cloud-starter-feign>
     </properties>
 
     <dependencies>
