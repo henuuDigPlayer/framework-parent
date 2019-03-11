@@ -3,7 +3,7 @@ package com.zjdex.framework.config;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -21,8 +21,8 @@ import java.util.concurrent.ThreadPoolExecutor;
 public class ExecutorConfig {
     private static final Logger logger = LoggerFactory.getLogger(ExecutorConfig.class);
 
-    @Value("${threadPool.corePoolSize}")
-    private Integer corePoolSize;
+    @Autowired
+    private ParamsConfig paramsConfig;
 
     /**
      * 线程池
@@ -31,8 +31,13 @@ public class ExecutorConfig {
     @Bean(name = "scheduledExecutorService")
     public ScheduledExecutorService scheduledExecutorService() {
         logger.info("ScheduledExecutorService start init");
+        Integer corePoolSize = 5;
+        Object value = this.paramsConfig.getThreadPool().get("corePoolSize");
+        if(value != null){
+            corePoolSize = Integer.parseInt(value.toString());
+        }
         ThreadFactory threadFactory =
-                new ThreadFactoryBuilder().setNameFormat("thread-pool-%d").build();
+                new ThreadFactoryBuilder().setNameFormat("scheduled-thread-pool-%d").build();
         return new ScheduledThreadPoolExecutor(corePoolSize,
                 threadFactory,
                 new ThreadPoolExecutor.AbortPolicy());

@@ -1,104 +1,18 @@
 package com.zjdex.framework.mapper;
 
-import com.zjdex.framework.modle.SysConstant;
-import com.zjdex.framework.modle.SysConstantExample;
-import org.apache.ibatis.annotations.Param;
-
-import java.util.List;
+import com.zjdex.framework.model.SysConstant;
 
 /**
- * @author: null
+ * @author: lindj
  * @date: 2019-02-26 18:13:13
- * @description:  
+ * @description:
  */
 public interface SysConstantMapper {
     /**
-     * countByExample
-     * 
-     * @param example SysConstantExample 
-     * @return long 
+     * 根据key查询信息
+     *
+     * @param name String
+     * @return SysConstant
      */
-    long countByExample(SysConstantExample example);
-
-    /**
-     * deleteByExample
-     * 
-     * @param example SysConstantExample 
-     * @return int 
-     */
-    int deleteByExample(SysConstantExample example);
-
-    /**
-     * deleteByPrimaryKey
-     * 
-     * @param id Integer 
-     * @return int 
-     */
-    int deleteByPrimaryKey(Integer id);
-
-    /**
-     * insert
-     * 
-     * @param record SysConstant 
-     * @return int 
-     */
-    int insert(SysConstant record);
-
-    /**
-     * insertSelective
-     * 
-     * @param record SysConstant 
-     * @return int 
-     */
-    int insertSelective(SysConstant record);
-
-    /**
-     * selectByExample
-     * 
-     * @param example SysConstantExample 
-     * @return List<SysConstant> 
-     */
-    List<SysConstant> selectByExample(SysConstantExample example);
-
-    /**
-     * selectByPrimaryKey
-     * 
-     * @param id Integer 
-     * @return SysConstant 
-     */
-    SysConstant selectByPrimaryKey(Integer id);
-
-    /**
-     * updateByExampleSelective
-     * 
-     * @param record SysConstant 
-     * @param example SysConstantExample 
-     * @return int 
-     */
-    int updateByExampleSelective(@Param("record") SysConstant record, @Param("example") SysConstantExample example);
-
-    /**
-     * updateByExample
-     * 
-     * @param record SysConstant 
-     * @param example SysConstantExample 
-     * @return int 
-     */
-    int updateByExample(@Param("record") SysConstant record, @Param("example") SysConstantExample example);
-
-    /**
-     * updateByPrimaryKeySelective
-     * 
-     * @param record SysConstant 
-     * @return int 
-     */
-    int updateByPrimaryKeySelective(SysConstant record);
-
-    /**
-     * updateByPrimaryKey
-     * 
-     * @param record SysConstant 
-     * @return int 
-     */
-    int updateByPrimaryKey(SysConstant record);
+    SysConstant selectByName(String name);
 }

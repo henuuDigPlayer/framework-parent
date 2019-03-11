@@ -1,9 +1,9 @@
-package com.zjdex.framework.modle;
+package com.zjdex.framework.model;
 
 import java.util.Date;
 
 /**
- * @author: null
+ * @author: lindj
  * @date: 2019-02-26 18:13:13
  * @description:  
  */

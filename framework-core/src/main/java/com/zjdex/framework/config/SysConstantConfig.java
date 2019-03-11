@@ -3,7 +3,7 @@ package com.zjdex.framework.config;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
-import com.zjdex.framework.modle.SysConstant;
+import com.zjdex.framework.model.SysConstant;
 import com.zjdex.framework.service.SysConstantService;
 import com.zjdex.framework.util.data.StringUtil;
 import org.slf4j.Logger;
@@ -42,7 +42,7 @@ public class SysConstantConfig {
 
 
     @PostConstruct
-    public void init() {
+    private void init() {
         this.readWriteCacheMap =
                 CacheBuilder.newBuilder().initialCapacity(paramsConfig.getWriteMapSize())
                         .expireAfterWrite(paramsConfig.getWriteMapExpire(), TimeUnit.SECONDS)
@@ -70,7 +70,7 @@ public class SysConstantConfig {
      *
      * @return Runnable
      */
-    public Runnable getReadOnlyMapUpdateTask() {
+    private Runnable getReadOnlyMapUpdateTask() {
         return () -> {
             ConcurrentHashMap<String, String> readOnlyMap = SingletonEnum.INSTANCE.getReadMap();
             ConcurrentHashMap.KeySetView<String, String> keySetView = readOnlyMap.keySet();
@@ -109,7 +109,7 @@ public class SysConstantConfig {
         return value;
     }
 
-    public enum SingletonEnum {
+    private enum SingletonEnum {
         /**
          * SingletonEnum
          */

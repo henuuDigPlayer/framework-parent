@@ -3,6 +3,8 @@ package com.zjdex.framework.config;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
+import java.util.Map;
+
 /**
  * @author lindj
  * @date 2019/3/1
@@ -15,6 +17,7 @@ public class ParamsConfig {
     private Long writeMapExpire;
     private Long readMapExpire;
     private Integer writeMapSize;
+    private Map<String, Object> threadPool;
 
     public Long getWriteMapExpire() {
         return writeMapExpire;
@@ -38,5 +41,13 @@ public class ParamsConfig {
 
     public void setWriteMapSize(Integer writeMapSize) {
         this.writeMapSize = writeMapSize;
+    }
+
+    public Map<String, Object> getThreadPool() {
+        return threadPool;
+    }
+
+    public void setThreadPool(Map<String, Object> threadPool) {
+        this.threadPool = threadPool;
     }
 }

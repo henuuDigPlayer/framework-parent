@@ -14,9 +14,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 
 /**
- * @author: lindj
- * @date: 2018/6/15 16:04
- * @description: 缓存请求参数
+ * @author lindj
+ * @date 2018/6/15 16:04
+ * @description 缓存请求参数
  */
 public class HttpCacheRequestFilter implements Filter {
 
@@ -32,7 +32,7 @@ public class HttpCacheRequestFilter implements Filter {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
 
-        //解决跨域问题
+        // 解决跨域问题
         response.addHeader("Access-Control-Allow-Origin", "*");
         response.addHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
         response.addHeader("Access-Control-Allow-Headers", "Origin, No-Cache, X-Requested-With, " +
@@ -42,14 +42,11 @@ public class HttpCacheRequestFilter implements Filter {
         request.setAttribute("begin", System.currentTimeMillis());
 
         try {
-            if(ConstantUtil.METHOD_POST.equals(request.getMethod())) {
-                if (!request.getContentType().contains(ConstantUtil.FILE_CONTENT_TYPE)) {
+            boolean value = ConstantUtil.METHOD_POST.equals(request.getMethod()) &&
+                    !request.getContentType().contains(ConstantUtil.FILE_CONTENT_TYPE);
+            if(value) {
                     MyHttpServletRequestWrapper requestWrapper = new MyHttpServletRequestWrapper(request);
                     filterChain.doFilter(requestWrapper, response);
-                }
-                else{
-                    filterChain.doFilter(request, response);
-                }
             }else {
                 filterChain.doFilter(request, response);
             }
@@ -58,9 +55,6 @@ public class HttpCacheRequestFilter implements Filter {
             ResponseHolder.writeResponse(response, ResultCode.Codes.BUSINESS_ERROR);
         }
 
-        long begin = Long.parseLong(request.getAttribute("begin").toString());
-        long end = System.currentTimeMillis();
-        logger.info("completed = {}ms", (end - begin));
     }
 
 

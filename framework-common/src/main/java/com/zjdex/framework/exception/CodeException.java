@@ -4,9 +4,9 @@ package com.zjdex.framework.exception;
 import com.zjdex.framework.enums.CodeEnum;
 
 /**
- * @author: lindj
- * @date: 2018/4/12 13:35
- * @description: 封装异常类
+ * @author lindj
+ * @date 2018/4/12 13:35
+ * @description 封装异常类
  */
 public class CodeException extends RuntimeException {
 

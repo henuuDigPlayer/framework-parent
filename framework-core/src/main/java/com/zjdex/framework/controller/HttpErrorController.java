@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 public class HttpErrorController implements ErrorController {
 
     private static final String ERROR_PATH = "/error";
+
     /**
      * 处理未到达controller层的异常，直接抛出自定义异常
      *
@@ -26,8 +27,8 @@ public class HttpErrorController implements ErrorController {
     @RequestMapping(value = ERROR_PATH)
     public Object handleError(HttpServletRequest request) {
         Integer statusCode = (Integer) request.getAttribute("javax.servlet.error.status_code");
-       Integer value = HttpStatus.METHOD_NOT_ALLOWED.value();
-        if(value.equals(statusCode)){
+        Integer value = HttpStatus.METHOD_NOT_ALLOWED.value();
+        if (value.equals(statusCode)) {
             throw new CodeException(ResultCode.Codes.NOT_ALLOWED);
         }
         throw new CodeException(ResultCode.Codes.NOT_FIND);

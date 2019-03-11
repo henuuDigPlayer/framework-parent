@@ -1,14 +1,11 @@
 package com.zjdex.framework.service.impl;
 
 import com.zjdex.framework.mapper.SysConstantMapper;
-import com.zjdex.framework.modle.SysConstant;
-import com.zjdex.framework.modle.SysConstantExample;
+import com.zjdex.framework.model.SysConstant;
 import com.zjdex.framework.service.SysConstantService;
-import com.zjdex.framework.util.data.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 
 
 /**
@@ -30,13 +27,7 @@ public class SysConstantServiceImpl implements SysConstantService {
      */
     @Override
     public SysConstant getContent(String name) {
-        SysConstantExample example = new SysConstantExample();
-        example.createCriteria().andNameEqualTo(name);
-        List<SysConstant> list = this.sysConstantMapper.selectByExample(example);
-        if(!StringUtil.isEmpty(list)){
-            return list.get(0);
-        }
-        return null;
+        return this.sysConstantMapper.selectByName(name);
     }
 
 }

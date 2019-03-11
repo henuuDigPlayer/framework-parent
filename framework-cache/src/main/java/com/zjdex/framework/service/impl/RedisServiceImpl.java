@@ -70,7 +70,7 @@ public class RedisServiceImpl implements RedisService {
 
     /**
      * 获取缓存
-     * 注：该方法暂不支持Character数据类型
+     * 该方法暂不支持Character数据类型
      *
      * @param key   key
      * @param clazz 类型

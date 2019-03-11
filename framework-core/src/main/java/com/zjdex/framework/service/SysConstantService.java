@@ -1,7 +1,7 @@
 package com.zjdex.framework.service;
 
 
-import com.zjdex.framework.modle.SysConstant;
+import com.zjdex.framework.model.SysConstant;
 
 /**
  * @author lindj

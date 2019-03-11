@@ -3,10 +3,17 @@ package com.zjdex.framework.config;
 import org.redisson.Redisson;
 import org.redisson.api.RedissonClient;
 import org.redisson.config.Config;
+import org.redisson.config.SingleServerConfig;
+import org.redisson.spring.cache.CacheConfig;
+import org.redisson.spring.cache.RedissonSpringCacheManager;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.cache.CacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author lindj
@@ -18,20 +25,15 @@ import org.springframework.context.annotation.Configuration;
 @ConditionalOnProperty(name = "spring.redisson.enable", havingValue = "true")
 @ConfigurationProperties(prefix="spring.redisson")
 public class RedissonConfig {
-    private Integer idleConnectionTimeout;
     private Integer connectTimeout;
-    private Integer timeout;
-    private Integer retryAttempts;
-    private Integer retryInterval;
     private String password;
-    private Integer subscriptionsPerConnection;
     private String clientName;
     private String address;
-    private Integer subscriptionConnectionMinimumIdleSize;
-    private Integer subscriptionConnectionPoolSize;
     private Integer connectionMinimumIdleSize;
     private Integer connectionPoolSize;
     private Integer database;
+    private Long ttl;
+    private Long maxIdleTime;
 
     @Bean(destroyMethod = "shutdown")
     public RedissonClient getRedissionClient() {
@@ -43,24 +45,18 @@ public class RedissonConfig {
                 .setConnectionMinimumIdleSize(connectionMinimumIdleSize)
                 .setConnectionPoolSize(connectionPoolSize)
                 .setDatabase(database)
-                .setSubscriptionConnectionMinimumIdleSize(subscriptionConnectionMinimumIdleSize)
-                .setSubscriptionConnectionPoolSize(subscriptionConnectionPoolSize)
-                .setSubscriptionsPerConnection(subscriptionsPerConnection)
-                .setConnectTimeout(connectTimeout)
-                .setIdleConnectionTimeout(idleConnectionTimeout)
-                .setRetryAttempts(retryAttempts)
-                .setRetryInterval(retryInterval)
-                .setTimeout(timeout);
+                .setConnectTimeout(connectTimeout);
         return Redisson.create(config);
     }
 
-    public Integer getIdleConnectionTimeout() {
-        return idleConnectionTimeout;
+    @Bean
+    CacheManager cacheManager(RedissonClient redissonClient) {
+        Map<String, CacheConfig> config = new HashMap<String, CacheConfig>();
+        config.put("testMap", new CacheConfig(ttl, maxIdleTime));
+        return new RedissonSpringCacheManager(redissonClient, config);
     }
 
-    public void setIdleConnectionTimeout(Integer idleConnectionTimeout) {
-        this.idleConnectionTimeout = idleConnectionTimeout;
-    }
+
 
     public Integer getConnectTimeout() {
         return connectTimeout;
@@ -70,44 +66,12 @@ public class RedissonConfig {
         this.connectTimeout = connectTimeout;
     }
 
-    public Integer getTimeout() {
-        return timeout;
-    }
-
-    public void setTimeout(Integer timeout) {
-        this.timeout = timeout;
-    }
-
-    public Integer getRetryAttempts() {
-        return retryAttempts;
-    }
-
-    public void setRetryAttempts(Integer retryAttempts) {
-        this.retryAttempts = retryAttempts;
-    }
-
-    public Integer getRetryInterval() {
-        return retryInterval;
-    }
-
-    public void setRetryInterval(Integer retryInterval) {
-        this.retryInterval = retryInterval;
-    }
-
     public String getPassword() {
         return password;
     }
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public Integer getSubscriptionsPerConnection() {
-        return subscriptionsPerConnection;
-    }
-
-    public void setSubscriptionsPerConnection(Integer subscriptionsPerConnection) {
-        this.subscriptionsPerConnection = subscriptionsPerConnection;
     }
 
     public String getClientName() {
@@ -126,22 +90,6 @@ public class RedissonConfig {
         this.address = address;
     }
 
-    public Integer getSubscriptionConnectionMinimumIdleSize() {
-        return subscriptionConnectionMinimumIdleSize;
-    }
-
-    public void setSubscriptionConnectionMinimumIdleSize(Integer subscriptionConnectionMinimumIdleSize) {
-        this.subscriptionConnectionMinimumIdleSize = subscriptionConnectionMinimumIdleSize;
-    }
-
-    public Integer getSubscriptionConnectionPoolSize() {
-        return subscriptionConnectionPoolSize;
-    }
-
-    public void setSubscriptionConnectionPoolSize(Integer subscriptionConnectionPoolSize) {
-        this.subscriptionConnectionPoolSize = subscriptionConnectionPoolSize;
-    }
-
     public Integer getConnectionMinimumIdleSize() {
         return connectionMinimumIdleSize;
     }
@@ -156,6 +104,22 @@ public class RedissonConfig {
 
     public void setConnectionPoolSize(Integer connectionPoolSize) {
         this.connectionPoolSize = connectionPoolSize;
+    }
+
+    public Long getTtl() {
+        return ttl;
+    }
+
+    public void setTtl(Long ttl) {
+        this.ttl = ttl;
+    }
+
+    public Long getMaxIdleTime() {
+        return maxIdleTime;
+    }
+
+    public void setMaxIdleTime(Long maxIdleTime) {
+        this.maxIdleTime = maxIdleTime;
     }
 
     public Integer getDatabase() {

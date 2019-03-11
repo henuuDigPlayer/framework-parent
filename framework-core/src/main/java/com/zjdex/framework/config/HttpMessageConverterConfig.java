@@ -9,9 +9,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.HttpMessageConverter;
 
 /**
- * @author: lindj
- * @date: 2018/4/12 12:30
- * @description: bean定义
+ * @author lindj
+ * @date 2018/4/12 12:30
+ * @description bean定义
  */
 @Configuration
 public class HttpMessageConverterConfig {

@@ -21,9 +21,9 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 
 /**
- * @author: lindj
- * @date: 2018/12/29
- * @description:
+ * @author lindj
+ * @date 2018/12/29
+ * @description key为spl表达式
  */
 
 @Aspect
@@ -61,7 +61,6 @@ public class PreventReSubmitAspect {
                     context.setVariable(parameters[i].getName(), objects[i]);
                 }
                 key = parser.parseExpression(key).getValue(context, String.class);
-                System.out.println(key);
             }
             StringBuilder builder = new StringBuilder();
             builder.append(method.getName()).append(":").append(key);

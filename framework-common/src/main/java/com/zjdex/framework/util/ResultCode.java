@@ -4,9 +4,9 @@ package com.zjdex.framework.util;
 import com.zjdex.framework.enums.CodeEnum;
 
 /**
- * @author: lindj
- * @date: 2018/4/17 13:32
- * @description: 状态码
+ * @author lindj
+ * @date 2018/4/17 13:32
+ * @description 状态码
  */
 public class ResultCode {
 
@@ -27,27 +27,12 @@ public class ResultCode {
          * 正常请求提示
          */
         SUCCESS(10000, "成功"),
-        /**
-         * 逻辑处理异常
-         */
-        BUSINESS_ERROR(60000, "处理异常"),
-        /**
-         * 文件上传下载异常
-         */
-        FILE_NOT_FIND(70001, "文件不存在"),
+
         /**
          * 未登录
          */
         NOT_LOGIN(30001, "未登录"),
-        /**
-         * 内容未找到
-         */
-        UNKNOW(50000, "内容未找到"),
 
-        /**
-         * 重复提交
-         */
-        SUBMIT_REPEAT(90001, "已经提交请求，不能重复提交"),
         /**
          * 数据过期
          */
@@ -60,8 +45,25 @@ public class ResultCode {
          * 已注册
          */
         REGISTED(3004, "账号已注册"),
+        /**
+         * 内容未找到
+         */
+        UNKNOW(50000, "内容未找到"),
+        /**
+         * 逻辑处理异常
+         */
+        BUSINESS_ERROR(60000, "处理异常"),
+        /**
+         * 文件上传下载异常
+         */
+        FILE_NOT_FIND(70001, "文件不存在"),
+        /**
+         * 重复提交
+         */
+        SUBMIT_REPEAT(90001, "已经提交请求，不能重复提交"),
         SQL_INJECTION(90002, "请求数据存在安全风险"),
         SINLE_RATE_LIMIT(90003, "请求次数已达上限，请稍后重试");
+
 
         private Integer code;
         private String message;

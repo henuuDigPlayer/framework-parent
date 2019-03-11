@@ -2,17 +2,16 @@ package com.zjdex.framework.aspect;
 
 import com.zjdex.framework.bean.BaseResponse;
 import com.zjdex.framework.exception.CodeException;
+import com.zjdex.framework.holder.RequestHolder;
 import com.zjdex.framework.holder.ResponseHolder;
 import com.zjdex.framework.util.*;
 import com.zjdex.framework.util.constant.ConstantUtil;
 import com.zjdex.framework.util.data.JsonUtil;
 import com.zjdex.framework.util.data.StringUtil;
+import com.zjdex.framework.util.http.HttpRequestUtil;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.annotation.Around;
-import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Before;
-import org.aspectj.lang.annotation.Pointcut;
+import org.aspectj.lang.annotation.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -52,7 +51,7 @@ public class HttpRequestAspect {
 
         logger.info("method = {}", method);
         // 来源ip
-        logger.info("ip = {}", request.getRemoteAddr());
+        logger.info("ip = {}", HttpRequestUtil.getIpAddr(request));
         // 请求处理方法
         logger.info("class_method = {}", joinPoint.getSignature()
                 .getDeclaringTypeName() + "." + joinPoint.getSignature().getName());
@@ -97,6 +96,14 @@ public class HttpRequestAspect {
         BaseResponse baseResponse = ResponseUtil.success(object);
         logger.info("result = {}", JsonUtil.objectToJson(baseResponse));
         return baseResponse;
+    }
+
+    @After("execute()")
+    public void complete(){
+        HttpServletRequest request = RequestHolder.getRequest();
+        long begin = Long.parseLong(request.getAttribute("begin").toString());
+        long end = System.currentTimeMillis();
+        logger.info("completed = {}ms", (end - begin));
     }
 
     /**
