@@ -7,7 +7,7 @@
   <groupId>com.zjdex.framework</groupId>
   <artifactId>parent</artifactId>
   <packaging>pom</packaging>
-  <version>1.2</version>
+  <version>1.3</version>
   <modules>
     <module>framework-core</module>
     <module>framework-starter</module>
@@ -30,10 +30,10 @@
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <java.version>1.8</java.version>
 
-    <framework-common>1.2</framework-common>
-    <framework-core>1.2</framework-core>
-    <framework-cache>1.2</framework-cache>
-    <framework-mq>1.2</framework-mq>
+    <framework-common>1.3</framework-common>
+    <framework-core>1.3</framework-core>
+    <framework-cache>1.3</framework-cache>
+    <framework-mq>1.3</framework-mq>
 
     <fastjson>1.2.47</fastjson>
     <jedis>2.9.0</jedis>

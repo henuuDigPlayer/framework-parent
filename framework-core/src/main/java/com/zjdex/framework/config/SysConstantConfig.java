@@ -40,6 +40,8 @@ public class SysConstantConfig {
 
     private LoadingCache<String, String> readWriteCacheMap;
 
+    private ConcurrentHashMap<String, String> readOnlyMap;
+
 
     @PostConstruct
     private void init() {
@@ -60,6 +62,7 @@ public class SysConstantConfig {
                                 return null;
                             }
                         });
+        readOnlyMap = new ConcurrentHashMap<String, String>(20);
         scheduledExecutorService.scheduleAtFixedRate(getReadOnlyMapUpdateTask(),
                 paramsConfig.getReadMapExpire(),
                 paramsConfig.getReadMapExpire(), TimeUnit.SECONDS);
@@ -72,7 +75,6 @@ public class SysConstantConfig {
      */
     private Runnable getReadOnlyMapUpdateTask() {
         return () -> {
-            ConcurrentHashMap<String, String> readOnlyMap = SingletonEnum.INSTANCE.getReadMap();
             ConcurrentHashMap.KeySetView<String, String> keySetView = readOnlyMap.keySet();
             Iterator<String> iterator = keySetView.iterator();
             while (iterator.hasNext()) {
@@ -97,39 +99,16 @@ public class SysConstantConfig {
      * @return String
      */
     public String getValue(String name) {
-        String value = SingletonEnum.INSTANCE.getContent(name);
+        String value = readOnlyMap.get(name);
         if (StringUtil.isEmpty(value)) {
             try {
                 value = readWriteCacheMap.get(name);
             } catch (ExecutionException e) {
                 e.printStackTrace();
             }
-            SingletonEnum.INSTANCE.getReadMap().put(name, value);
+            readOnlyMap.put(name, value);
         }
         return value;
-    }
-
-    private enum SingletonEnum {
-        /**
-         * SingletonEnum
-         */
-        INSTANCE;
-        private ConcurrentHashMap<String, String> readOnlyMap;
-
-        SingletonEnum() {
-            readOnlyMap =
-                    new ConcurrentHashMap<String, String>();
-        }
-
-        public ConcurrentHashMap<String, String> getReadMap() {
-            return readOnlyMap;
-        }
-
-        public String getContent(String name) {
-            return readOnlyMap.get(name);
-        }
-
-
     }
 
 }
