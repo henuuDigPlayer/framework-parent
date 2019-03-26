@@ -43,4 +43,6 @@ public interface ConstantUtil {
 
     String METHOD_POST = "POST";
 
+    String JWT_SECRET = "lindj";
+
 }

@@ -11,11 +11,11 @@ import java.io.Serializable;
  * @date: 2018/4/12 13:50
  * @description: 封装返回实体,未完待续
  */
-public class BaseResponse implements Serializable {
+public class BaseResponse<T> implements Serializable {
 
     private Integer code;
     private String message;
-    private Object data;
+    private T data;
 
     public BaseResponse() {
     }
@@ -23,8 +23,8 @@ public class BaseResponse implements Serializable {
     /**
      * 返回成功，有返回处理结果
      */
-    public BaseResponse(Object object) {
-        this.data = object;
+    public BaseResponse(T t) {
+        this.data = t;
         this.code = ResultCode.Codes.SUCCESS.getCode();
         this.message = ResultCode.Codes.SUCCESS.getMesssage();
     }
@@ -71,7 +71,7 @@ public class BaseResponse implements Serializable {
         return data;
     }
 
-    public void setData(Object data) {
+    public void setData(T data) {
         this.data = data;
     }
 
