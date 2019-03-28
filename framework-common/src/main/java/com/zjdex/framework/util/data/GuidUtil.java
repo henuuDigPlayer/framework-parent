@@ -13,6 +13,8 @@ import java.security.SecureRandom;
 public class GuidUtil {
 
 
+    private static volatile GuidUtil guidUtil = null;
+
     /**
      * 区域标志位数
      */
@@ -62,7 +64,7 @@ public class GuidUtil {
     private final long workerId;
     private final long regionId;
 
-    public GuidUtil(long workerId, long regionId) {
+    private GuidUtil(long workerId, long regionId) {
         // 如果超出范围就抛出异常
         if (workerId > MAX_WORKER_ID || workerId < 0) {
             throw new IllegalArgumentException("worker Id can't be greater than %d or less than 0");
@@ -74,7 +76,7 @@ public class GuidUtil {
         this.regionId = regionId;
     }
 
-    public GuidUtil(long workerId) {
+    private GuidUtil(long workerId) {
         // 如果超出范围就抛出异常
         if (workerId > MAX_WORKER_ID || workerId < 0) {
             throw new IllegalArgumentException("worker Id can't be greater than %d or less than 0");
@@ -83,7 +85,19 @@ public class GuidUtil {
         this.regionId = 0;
     }
 
-    public long generate() {
+    public static GuidUtil getInstance(Integer workId){
+        if(guidUtil == null) {
+            synchronized (GuidUtil.class){
+                if(guidUtil == null){
+                    guidUtil = new GuidUtil(workId);
+                }
+            }
+        }
+        return guidUtil;
+    }
+
+
+    private long generate() {
         return this.nextId(false, 0);
     }
 
@@ -144,16 +158,8 @@ public class GuidUtil {
     /**
      * 获取当前的时间戳
      */
-    protected long timeGen() {
+    private long timeGen() {
         return System.currentTimeMillis();
     }
 
-
-    public static void main(String[] args){
-        GuidUtil guidUtil = new GuidUtil(1);
-        for(int i = 0; i <= 19; i++) {
-            Long id = guidUtil.generate();
-            System.out.println(id);
-        }
-    }
 }

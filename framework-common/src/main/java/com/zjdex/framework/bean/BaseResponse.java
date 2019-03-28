@@ -67,7 +67,7 @@ public class BaseResponse<T> implements Serializable {
         this.message = message;
     }
 
-    public Object getData() {
+    public T getData() {
         return data;
     }
 
