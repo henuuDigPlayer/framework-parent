@@ -63,10 +63,10 @@ public class HttpRequestAspect {
                     if(!method.equals(ConstantUtil.METHOD_GET)) {
                         String requestParams = JsonUtil.objectToJson(joinPoint.getArgs()[0]);
                         logger.info("args = {}", (requestParams));
-                        if (!CheckSqlInjectionUtil.validate(requestParams)) {
+                       /* if (!CheckSqlInjectionUtil.validate(requestParams)) {
                             ResponseHolder.writeResponse(ResultCode.Codes.SQL_INJECTION);
                             return;
-                        }
+                        }*/
                     }
                 }
             }

@@ -97,7 +97,7 @@ public class GuidUtil {
     }
 
 
-    private long generate() {
+    public long generate() {
         return this.nextId(false, 0);
     }
 
