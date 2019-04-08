@@ -31,6 +31,16 @@ public class RedissonService {
     }
 
     /**
+     * bucket 操作
+     * @param key String
+     * @param clazz 类型
+     */
+    public <T> T get(String key, Class<T> clazz){
+        RBucket buctet = this.redissonClient.getBucket(key);
+        return (T)buctet.get();
+    }
+
+    /**
      *
      * @param key
      * @param value

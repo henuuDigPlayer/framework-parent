@@ -3,11 +3,6 @@ package com.zjdex.framework.config;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
-/**
- * @author lindj
- * @date 2019/3/20
- * @description
- */
 @Configuration
 @ConfigurationProperties(prefix = "redisson")
 public class RedissonProperties {
@@ -30,9 +25,27 @@ public class RedissonProperties {
      */
     private Integer masterConnectionPoolSize;
     /**
+     * 主节点最小空闲连接数
+     */
+
+    private Integer masterConnectionMinimumIdleSize;
+    /**
+     * 连接空闲超时
+     */
+    private Integer idleConnectionTimeout;
+    /**
+     * 重新连接时间间隔
+     */
+    private Integer reconnectionTimeout;
+    /**
      * 从节点连接池大小
      */
     private Integer slaveConnectionPoolSize;
+    /**
+     * 从节点最小空闲连接数
+     */
+    private Integer slaveConnectionMinimumIdleSize;
+
     private String[] sentinelAddresses;
     private Integer database;
     private String masterName;
@@ -77,12 +90,44 @@ public class RedissonProperties {
         this.masterConnectionPoolSize = masterConnectionPoolSize;
     }
 
+    public Integer getMasterConnectionMinimumIdleSize() {
+        return masterConnectionMinimumIdleSize;
+    }
+
+    public void setMasterConnectionMinimumIdleSize(Integer masterConnectionMinimumIdleSize) {
+        this.masterConnectionMinimumIdleSize = masterConnectionMinimumIdleSize;
+    }
+
+    public Integer getIdleConnectionTimeout() {
+        return idleConnectionTimeout;
+    }
+
+    public void setIdleConnectionTimeout(Integer idleConnectionTimeout) {
+        this.idleConnectionTimeout = idleConnectionTimeout;
+    }
+
+    public Integer getReconnectionTimeout() {
+        return reconnectionTimeout;
+    }
+
+    public void setReconnectionTimeout(Integer reconnectionTimeout) {
+        this.reconnectionTimeout = reconnectionTimeout;
+    }
+
     public Integer getSlaveConnectionPoolSize() {
         return slaveConnectionPoolSize;
     }
 
     public void setSlaveConnectionPoolSize(Integer slaveConnectionPoolSize) {
         this.slaveConnectionPoolSize = slaveConnectionPoolSize;
+    }
+
+    public Integer getSlaveConnectionMinimumIdleSize() {
+        return slaveConnectionMinimumIdleSize;
+    }
+
+    public void setSlaveConnectionMinimumIdleSize(Integer slaveConnectionMinimumIdleSize) {
+        this.slaveConnectionMinimumIdleSize = slaveConnectionMinimumIdleSize;
     }
 
     public String[] getSentinelAddresses() {

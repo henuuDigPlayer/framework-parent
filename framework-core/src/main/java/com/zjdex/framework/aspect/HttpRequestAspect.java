@@ -58,19 +58,12 @@ public class HttpRequestAspect {
         // 请求参数
         try {
             logger.info(request.getContentType());
-            if(!StringUtil.isEmpty(joinPoint.getArgs())){
-                if(!request.getContentType().contains(ConstantUtil.FILE_CONTENT_TYPE)) {
-                    if(!method.equals(ConstantUtil.METHOD_GET)) {
-                        String requestParams = JsonUtil.objectToJson(joinPoint.getArgs()[0]);
-                        logger.info("args = {}", (requestParams));
-                       /* if (!CheckSqlInjectionUtil.validate(requestParams)) {
-                            ResponseHolder.writeResponse(ResultCode.Codes.SQL_INJECTION);
-                            return;
-                        }*/
-                    }
-                }
+            if (!request.getContentType().contains(ConstantUtil.FILE_CONTENT_TYPE) && !method.equals(ConstantUtil.METHOD_GET) && !StringUtil.isEmpty(joinPoint.getArgs())) {
+                String requestParams = JsonUtil.objectToJson(joinPoint.getArgs()[0]);
+                logger.info("args = {}", (requestParams));
             }
-        }catch (Exception e){
+        } catch (
+                Exception e) {
             logger.error(e.getMessage());
         }
 
@@ -99,7 +92,7 @@ public class HttpRequestAspect {
     }
 
     @After("execute()")
-    public void complete(){
+    public void complete() {
         HttpServletRequest request = RequestHolder.getRequest();
         long begin = Long.parseLong(request.getAttribute("begin").toString());
         long end = System.currentTimeMillis();
