@@ -20,59 +20,71 @@ public class RedissonService {
 
     /**
      * bucket 操作
-     * @param key String
-     * @param value object
-     * @param timeout long
+     *
+     * @param key      String
+     * @param value    object
+     * @param timeout  long
      * @param timeUnit
      */
-    public void set(String key, Object value, long timeout, TimeUnit timeUnit){
+    public void set(String key, Object value, long timeout, TimeUnit timeUnit) {
         RBucket buctet = this.redissonClient.getBucket(key);
         buctet.set(value, timeout, timeUnit);
     }
 
     /**
      * bucket 操作
-     * @param key String
+     *
+     * @param key   String
      * @param clazz 类型
      */
-    public <T> T get(String key, Class<T> clazz){
+    public <T> T get(String key, Class<T> clazz) {
         RBucket<T> buctet = this.redissonClient.getBucket(key);
         return buctet.get();
     }
 
     /**
+     * 对象删除
      *
+     * @param key String
+     * @return boolean
+     */
+    public boolean delete(String key) {
+        RBucket buctet = this.redissonClient.getBucket(key);
+        return buctet.delete();
+    }
+
+    /**
      * @param key
      * @param value
      * @param timeout
      * @param timeUnit
      */
-    public void setAsync(String key, Object value, long timeout, TimeUnit timeUnit){
+    public void setAsync(String key, Object value, long timeout, TimeUnit timeUnit) {
         RBucket buctet = this.redissonClient.getBucket(key);
         buctet.setAsync(value, timeout, timeUnit);
     }
 
-    public boolean trySet(String key, Object value, long timeout, TimeUnit timeUnit){
+    public boolean trySet(String key, Object value, long timeout, TimeUnit timeUnit) {
         RBucket buctet = this.redissonClient.getBucket(key);
         return buctet.trySet(value, timeout, timeUnit);
     }
 
-    public long incrementAtomicLong(String key){
+    public long incrementAtomicLong(String key) {
         RAtomicLong atomicLong = this.redissonClient.getAtomicLong(key);
         return atomicLong.incrementAndGet();
     }
 
-    public boolean expireAtomicLong(String key, long timeout, TimeUnit timeUnit){
+    public boolean expireAtomicLong(String key, long timeout, TimeUnit timeUnit) {
         RAtomicLong atomicLong = this.redissonClient.getAtomicLong(key);
         return atomicLong.expire(timeout, timeUnit);
     }
 
-    public RFuture<Boolean> expireAsyncAtomicLong(String key, long timeout, TimeUnit timeUnit){
+    public RFuture<Boolean> expireAsyncAtomicLong(String key, long timeout, TimeUnit timeUnit) {
         RAtomicLong atomicLong = this.redissonClient.getAtomicLong(key);
         return atomicLong.expireAsync(timeout, timeUnit);
     }
 
-    public long getAtomicLong(String key){
+    public long getAtomicLong(String key) {
         RAtomicLong atomicLong = this.redissonClient.getAtomicLong(key);
         return atomicLong.get();
     }
@@ -89,7 +101,7 @@ public class RedissonService {
         return lock;
     }
 
-    public RLock lock(String lockKey, TimeUnit unit , long timeout) {
+    public RLock lock(String lockKey, TimeUnit unit, long timeout) {
         RLock lock = redissonClient.getLock(lockKey);
         lock.lock(timeout, unit);
         return lock;

@@ -23,7 +23,6 @@ import java.util.Map;
  */
 
 @Configuration
-@ConfigurationProperties(prefix="redisson")
 public class RedissonConfig {
     @Autowired
     private RedissonProperties redissonProperties;
