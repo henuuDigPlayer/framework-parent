@@ -28,9 +28,11 @@ public class RedissonConfig {
     @Autowired
     private RedissonProperties redissonProperties;
 
+
     @Bean(value = "redissonClient", destroyMethod = "shutdown")
     public RedissonClient getClient(){
         Config config = new Config();
+        config.setCodec(new FastjsonCodec());
         config.useSentinelServers()
                 .setConnectTimeout(redissonProperties.getConnectTimeout())
                 .setTimeout(redissonProperties.getTimeout())
