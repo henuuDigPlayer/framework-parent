@@ -18,18 +18,8 @@ public class NumberUtils {
      * @param value Integer
      * @return boolean
      */
-    public static boolean isValidate(Integer value) {
-        return value == null || value <= 0;
-    }
-
-    /**
-     * 为空或者小于等于0 为false，其他 true
-     *
-     * @param value Integer
-     * @return boolean
-     */
-    public static boolean isValidate(Long value) {
-        return value == null || value <= 0;
+    public static boolean isValidate(Number value) {
+        return value == null || value.longValue() <= 0;
     }
 
     /**
