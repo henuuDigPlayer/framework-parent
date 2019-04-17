@@ -23,6 +23,16 @@ public class NumberUtils {
     }
 
     /**
+     * 为空或者小于等于0 为false，其他 true
+     *
+     * @param value Integer
+     * @return boolean
+     */
+    public static boolean isValidate(Long value) {
+        return value == null || value <= 0;
+    }
+
+    /**
      * 除法运算
      *
      * @param first  BigDecimal
