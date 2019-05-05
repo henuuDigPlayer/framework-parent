@@ -15,6 +15,7 @@ public class MyFastJsonConfig {
         fastJsonConfig.setSerializerFeatures(SerializerFeature.PrettyFormat);
         ParserConfig.getGlobalInstance().addAccept("com.zjdex.");
         ParserConfig.getGlobalInstance().addAccept("com.data4truth.pi.");
+        ParserConfig.getGlobalInstance().addAccept("org.apache.shiro.");
         return fastJsonConfig;
     }
 }

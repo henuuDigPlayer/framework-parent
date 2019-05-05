@@ -7,6 +7,8 @@ import org.springframework.context.annotation.Configuration;
 @ConfigurationProperties(prefix = "redisson")
 public class RedissonProperties {
 
+    private String mode;
+
     /**
      * 连接超时 毫秒
      */
@@ -49,6 +51,15 @@ public class RedissonProperties {
     private String[] sentinelAddresses;
     private Integer database;
     private String masterName;
+    private String address;
+
+    public String getMode() {
+        return mode;
+    }
+
+    public void setMode(String mode) {
+        this.mode = mode;
+    }
 
     public Integer getConnectTimeout() {
         return connectTimeout;
@@ -152,5 +163,13 @@ public class RedissonProperties {
 
     public void setMasterName(String masterName) {
         this.masterName = masterName;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 }

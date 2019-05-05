@@ -2,6 +2,7 @@ package com.zjdex.framework.service;
 
 import org.redisson.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 
 import java.util.concurrent.TimeUnit;
@@ -12,6 +13,7 @@ import java.util.concurrent.TimeUnit;
  * @description
  */
 @Service
+@ConditionalOnProperty(name = "redisson.enable", havingValue = "true")
 public class RedissonService {
 
     @Autowired

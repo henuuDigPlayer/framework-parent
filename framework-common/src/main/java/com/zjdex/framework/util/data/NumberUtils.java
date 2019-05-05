@@ -18,8 +18,8 @@ public class NumberUtils {
      * @param value Integer
      * @return boolean
      */
-    public static boolean isValidate(Number value) {
-        return value == null || value.longValue() <= 0;
+    public static boolean isValidate(Integer value) {
+        return value == null || value <= 0;
     }
 
     /**
