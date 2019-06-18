@@ -109,6 +109,7 @@ public class HttpRequestAspect {
         if (e instanceof CodeException) {
             return ResponseUtil.error((CodeException) e);
         }
-        return ResponseUtil.error(ResultCode.Codes.BUSINESS_ERROR.getCode(), e.getMessage());
+        logger.error(e.getMessage());
+        return ResponseUtil.error(ResultCode.Codes.BUSINESS_ERROR.getCode(), "连接超时,请稍后重试");
     }
 }
