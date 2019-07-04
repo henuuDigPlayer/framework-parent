@@ -56,6 +56,7 @@ public class RedissonConfig {
     @ConditionalOnProperty(name = "redisson.mode", havingValue = "single")
     public RedissonClient getSingleClient() {
         Config config = new Config();
+        config.setCodec(new FastjsonCodec());
         config.useSingleServer()
                 .setAddress(redissonProperties.getAddress())
                 .setConnectTimeout(redissonProperties.getConnectTimeout())

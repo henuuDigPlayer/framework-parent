@@ -18,9 +18,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * @author: lindj
- * @date: 2018/4/12 12:41
- * @description: 读取业务配置资源，例如异常提示等
+ * @author lindj
+ * @date 2018/4/12 12:41
+ * @description 读取业务配置资源，例如异常提示等
  */
 public class PropertyUtil {
     private static final Logger logger = LoggerFactory.getLogger(PropertyUtil.class);

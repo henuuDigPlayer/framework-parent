@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * @author: lindj
- * @date: 2018/4/12 14:31
- * @description: 处理未到达controller层的异常
+ * @author lindj
+ * @date 2018/4/12 14:31
+ * @description 处理未到达controller层的异常
  */
 @RestController
 public class HttpErrorController implements ErrorController {

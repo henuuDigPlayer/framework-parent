@@ -3,7 +3,6 @@ package com.zjdex.framework.aspect;
 import com.zjdex.framework.bean.BaseResponse;
 import com.zjdex.framework.exception.CodeException;
 import com.zjdex.framework.holder.RequestHolder;
-import com.zjdex.framework.holder.ResponseHolder;
 import com.zjdex.framework.util.*;
 import com.zjdex.framework.util.constant.ConstantUtil;
 import com.zjdex.framework.util.data.JsonUtil;
@@ -43,7 +42,6 @@ public class HttpRequestAspect {
     public void doBefore(JoinPoint joinPoint) {
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = attributes.getRequest();
-        request.setAttribute("begin", System.currentTimeMillis());
         // 请求地址
         logger.info("url = {}", request.getRequestURL());
         // 请求类型
@@ -110,6 +108,6 @@ public class HttpRequestAspect {
             return ResponseUtil.error((CodeException) e);
         }
         logger.error(e.getMessage());
-        return ResponseUtil.error(ResultCode.Codes.BUSINESS_ERROR.getCode(), "连接超时,请稍后重试");
+        return ResponseUtil.error(ResultCode.Codes.BUSINESS_ERROR);
     }
 }

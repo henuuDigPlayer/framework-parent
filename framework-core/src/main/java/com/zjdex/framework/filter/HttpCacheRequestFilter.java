@@ -1,7 +1,7 @@
 package com.zjdex.framework.filter;
 
-import com.zjdex.framework.exception.CodeException;
 import com.zjdex.framework.holder.ResponseHolder;
+import com.zjdex.framework.util.ResponseUtil;
 import com.zjdex.framework.util.constant.ConstantUtil;
 import com.zjdex.framework.util.ResultCode;
 import org.slf4j.Logger;
@@ -44,15 +44,16 @@ public class HttpCacheRequestFilter implements Filter {
         try {
             boolean value = ConstantUtil.METHOD_POST.equals(request.getMethod()) &&
                     !request.getContentType().contains(ConstantUtil.FILE_CONTENT_TYPE);
-            if(value) {
-                    MyHttpServletRequestWrapper requestWrapper = new MyHttpServletRequestWrapper(request);
-                    filterChain.doFilter(requestWrapper, response);
-            }else {
+            if (value) {
+                MyHttpServletRequestWrapper requestWrapper = new MyHttpServletRequestWrapper(request);
+                filterChain.doFilter(requestWrapper, response);
+            } else {
                 filterChain.doFilter(request, response);
             }
         } catch (Exception e) {
             e.printStackTrace();
-            ResponseHolder.writeResponse(response, ResultCode.Codes.BUSINESS_ERROR);
+            ResponseHolder.writeResponse(response,
+                    ResponseUtil.error(ResultCode.Codes.BUSINESS_ERROR), 0);
         }
 
     }
@@ -62,7 +63,6 @@ public class HttpCacheRequestFilter implements Filter {
     public void destroy() {
 
     }
-
 
     public static class MyHttpServletRequestWrapper extends HttpServletRequestWrapper {
 
@@ -105,7 +105,6 @@ public class HttpCacheRequestFilter implements Filter {
 
                 @Override
                 public void setReadListener(ReadListener readListener) {
-
                 }
 
                 @Override

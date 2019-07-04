@@ -36,6 +36,17 @@ public class RedissonService {
     /**
      * bucket 操作
      *
+     * @param key      String
+     * @param value    object
+     */
+    public void set(String key, Object value) {
+        RBucket buctet = this.redissonClient.getBucket(key);
+        buctet.set(value);
+    }
+
+    /**
+     * bucket 操作
+     *
      * @param key   String
      * @param clazz 类型
      */
@@ -91,6 +102,11 @@ public class RedissonService {
         return atomicLong.get();
     }
 
+    /**
+     * 分布式锁
+     * @param lockKey String
+     * @return
+     */
     public RLock lock(String lockKey) {
         RLock lock = redissonClient.getLock(lockKey);
         lock.lock();
@@ -118,6 +134,10 @@ public class RedissonService {
         }
     }
 
+    /**
+     * 释放锁
+     * @param lockKey
+     */
     public void unlock(String lockKey) {
         RLock lock = redissonClient.getLock(lockKey);
         lock.unlock();

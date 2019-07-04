@@ -11,15 +11,16 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * @author: lindj
- * @date: 2018/5/16 17:06
- * @description: 数据库配置
+ * @author lindj
+ * @date 2018/5/16 17:06
+ * @description 数据库配置
  */
 @Configuration
+@ConditionalOnProperty(name = "spring.datasource")
 public class DataSourceConfig {
 
-    @Bean(name = "dataSource_druid",initMethod = "init", destroyMethod = "close")
-    @ConfigurationProperties(prefix="spring.datasource")
+    @Bean(name = "dataSource_druid", initMethod = "init", destroyMethod = "close")
+    @ConfigurationProperties(prefix = "spring.datasource")
     public DruidDataSource dataSource() {
         DruidDataSource datasource = new DruidDataSource();
         return datasource;
@@ -27,28 +28,29 @@ public class DataSourceConfig {
 
     /**
      * 注册ServletRegistrationBean
+     *
      * @return
      */
     @Bean
     public ServletRegistrationBean registrationBean() {
         ServletRegistrationBean bean = new ServletRegistrationBean(new StatViewServlet(), "/druid/*");
-        /** 初始化参数配置，initParams**/
         return bean;
     }
+
     /**
      * 注册FilterRegistrationBean
+     *
      * @return
      */
     @Bean
     public FilterRegistrationBean druidStatFilter() {
         FilterRegistrationBean bean = new FilterRegistrationBean(new WebStatFilter());
-        //添加过滤规则.
+        // 添加过滤规则.
         bean.addUrlPatterns("/*");
-        //添加不需要忽略的格式信息.
-        bean.addInitParameter("exclusions","*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*");
+        // 添加不需要忽略的格式信息.
+        bean.addInitParameter("exclusions", "*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*");
         return bean;
     }
-
 
 
 }

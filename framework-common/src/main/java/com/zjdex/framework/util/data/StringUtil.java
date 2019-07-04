@@ -1,9 +1,6 @@
 package com.zjdex.framework.util.data;
 
 
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
 import org.apache.commons.lang3.StringUtils;
 
 import java.lang.reflect.Field;
@@ -18,8 +15,6 @@ import java.util.Map;
  * @description: 数据校验
  */
 public class StringUtil {
-
-    public static Gson gson = new Gson();
 
     /**
      * 容器校验

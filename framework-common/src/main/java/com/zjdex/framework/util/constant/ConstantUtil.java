@@ -8,30 +8,10 @@ package com.zjdex.framework.util.constant;
 public interface ConstantUtil {
 
     /**
-     * token过期时间 30分钟
-     */
-    long TIMEOUT = 1800;
-    /**
-     * 请求过期时间 10秒
-     */
-    long REQUEST_TIMEOUT = 10;
-
-    long CONNECTION_TIMEOUT = 10 * 1000L;
-
-    /**
      * 缓存验证码前缀
      */
     String VALIFY_CODE = "valifyCode";
 
-    /**
-     * 缓存短信计时器前缀
-     */
-    String MESSAGE_LIMIT = "messageLimit";
-
-    /**
-     * token前缀
-     */
-    String TOKEN = "token";
 
     /**
      * 上传文件 content-type
@@ -43,6 +23,21 @@ public interface ConstantUtil {
 
     String METHOD_POST = "POST";
 
-    String JWT_SECRET = "lindj";
+    String LOGIN_SALT = "storyweb-bp";
+    //request请求头属性
+    String REQUEST_AUTH_HEADER="Authorization";
+
+    //JWT-account
+    String ACCOUNT = "account";
+
+    //Shiro redis 前缀
+    String PREFIX_SHIRO_CACHE = "storyweb-bp:cache:";
+
+    //redis-key-前缀-shiro:refresh_token
+    String PREFIX_SHIRO_REFRESH_TOKEN = "storyweb-bp:refresh_token:";
+
+    //JWT-currentTimeMillis
+    String CURRENT_TIME_MILLIS = "currentTimeMillis";
+
 
 }

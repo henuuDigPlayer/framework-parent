@@ -3,13 +3,13 @@ package com.zjdex.framework.util;
 import java.util.regex.Pattern;
 
 /**
- * @author: lindj
- * @date: 2018/12/3
- * @description:
+ * @author lindj
+ * @date 2018/12/3
+ * @description
  */
 public class CheckSqlInjectionUtil {
     private static final String SQL_REG = "(?:')|(?:--)|(/\\*(?:.|[\\n\\r])*?\\*/)|"
-            + "(\\b(select|update|and|or|delete|insert|trancate|char|into|substr|"
+            + "(\\b(select|update|delete|insert|trancate|into|"
             + "ascii|declare|exec|count|master|into|drop|execute)\\b)";
 
     private static Pattern pattern = Pattern.compile(SQL_REG, Pattern.CASE_INSENSITIVE);
