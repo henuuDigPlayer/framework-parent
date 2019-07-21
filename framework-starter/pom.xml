@@ -24,11 +24,6 @@
             <artifactId>framework-core</artifactId>
             <version>${framework-core}</version>
         </dependency>
-        <dependency>
-            <groupId>com.zjdex.framework</groupId>
-            <artifactId>framework-mq</artifactId>
-            <version>${framework-mq}</version>
-        </dependency>
     </dependencies>
 
 </project>
