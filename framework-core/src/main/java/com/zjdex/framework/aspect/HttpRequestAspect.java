@@ -56,7 +56,9 @@ public class HttpRequestAspect {
         // 请求参数
         try {
             logger.info(request.getContentType());
-            if (!request.getContentType().contains(ConstantUtil.FILE_CONTENT_TYPE) && !method.equals(ConstantUtil.METHOD_GET) && !StringUtil.isEmpty(joinPoint.getArgs())) {
+            if (!StringUtil.isEmpty(request.getContentType()) &&
+                    !request.getContentType().contains(ConstantUtil.FILE_CONTENT_TYPE) &&
+                    !method.equals(ConstantUtil.METHOD_GET) && !StringUtil.isEmpty(joinPoint.getArgs())) {
                 String requestParams = JsonUtil.objectToJson(joinPoint.getArgs()[0]);
                 logger.info("args = {}", (requestParams));
             }
