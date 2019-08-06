@@ -9,7 +9,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.StringHttpMessageConverter;
 
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,7 +35,9 @@ public class HttpMessageConverterConfig {
         // 在converter中添加配置信息
         fasHttpMessageConverter.setFastJsonConfig(fastJsonConfig);
         HttpMessageConverter<?> converter = fasHttpMessageConverter;
-        return new HttpMessageConverters(converter);
+        StringHttpMessageConverter converterStr = new StringHttpMessageConverter(Charset.forName(
+                "UTF-8"));
+        return new HttpMessageConverters(converter, converterStr);
     }
 
 }
