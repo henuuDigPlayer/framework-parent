@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.zjdex.framework.mapper.SysConstantMapper">
+<mapper namespace="com.boot.framework.mapper.SysConstantMapper">
   <sql id="Base_Column_List">
     title, content, name
   </sql>
   <select id="selectByName" parameterType="java.lang.String"
-          resultType="com.zjdex.framework.model.SysConstant">
+          resultType="com.boot.framework.model.SysConstant">
     select
 
     <include refid="Base_Column_List" />
